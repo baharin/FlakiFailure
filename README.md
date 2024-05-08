@@ -34,8 +34,8 @@ Folders
 Prerequisite
 --------------------------------------------
 - Python (3.8.5)
-- BeamNG.tech (0.27)
-- BeamNGpy (1.25.1)
+- BeamNG.tech (0.27) [For ADS]
+- BeamNGpy (1.25.1) [For ADS]
 - Virtual Box 6.1 [For NTSS]
 - Ubuntu 20.04 disc image (https://ubuntu.com/download/desktop) [For NTSS]
 - OpenWrt 19.0.7 (https://downloads.openwrt.org/releases/19.07.8/targets/x86/64/) [For NTSS]
