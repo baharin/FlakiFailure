@@ -1,4 +1,3 @@
-#Decision Rules - RIPPER - ADAS
 import pickle
 import wittgenstein as lw
 import pandas as pd
