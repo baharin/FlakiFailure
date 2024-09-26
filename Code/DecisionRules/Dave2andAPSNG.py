@@ -57,27 +57,6 @@ def PreprocessWithoutRep(data, rep, column, model):
 
 
 def GetConfSamp(dictt, passorfail, data):
-
-
-  print('this is dictt', dictt)
-
-
-  # data = pd.read_excel('C:\\Users\\Mehrdad\\Documents\\rabbitrun\\meetings\\Extending Paper 2\\beamngAI\\August 2\\Genetic algorithm results\\roaddata - beamng - tol is 0.85 - size 2000 with rep - ambiegen - withpassfail.xlsx')
-
-  # data = pd.read_excel('C:\\Users\\Mehrdad\\Documents\\rabbitrun\\meetings\\Extending Paper 2\\dave2-udacity\\genetic programming results\\roaddata - newdave2 - deepjanus - size 2000 with rep - with passandfail.xlsx')
-
-  # data = pd.read_excel('townbeamng.xlsx')
-  # data = pd.read_csv('ds_beamng.csv')
-  # data = pd.read_excel('C:\\Users\\Mehrdad\\Documents\\rabbitrun\\meetings\\Extending Paper 2\\beamngAI\\January 11 - town - complete\\townbeamng.xlsx')
-
-  # data = pd.read_csv('C:\\Users\\Mehrdad\\Documents\\rabbitrun\\meetings\\Extending Paper 2\\beamngAI\\MH - beamng - from github\\townbeamng - MH.csv')
-
-
-  # data = data[:2000]
-  # rep = 10
-  # data = PreprocessWithoutRep(data, rep, col, model)
-
-
   trues = 0
   inrange = 0
 
