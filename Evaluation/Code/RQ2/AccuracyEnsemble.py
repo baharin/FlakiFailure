@@ -20,7 +20,7 @@ def CalculateInconclusiveness(coveredpoints, technique):
 
   return inconclus
 
-def CalculateAccuracy(coveredpoints, technique, inconclus, model):
+def CalculatePerformance(coveredpoints, technique, inconclus, model):
 
 
   cols = ['RUN'+str(i) for i in range(1, 21)]
@@ -136,7 +136,7 @@ for w in withorwithout:
 
       dtinconclu = CalculateInconclusiveness(coveredpoints, 'Ensemble')
 
-      dtaccuracy, dtfalsepasses, dtfalsefails = CalculateAccuracy(coveredpoints, 'Ensemble', dtinconclu, model)
+      dtaccuracy, dtfalsepasses, dtfalsefails = CalculatePerformance(coveredpoints, 'Ensemble', dtinconclu, model)
 
 
       for i in range(len(dtinconclu)):
