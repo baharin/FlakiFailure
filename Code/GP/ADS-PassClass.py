@@ -259,26 +259,16 @@ def evaluate(individual):
 
         if fitnessfunc == 'Naish':
 
-          res = (countpasses / allpassesofdataset) - (countfails / (1 + allfailsofdataset))
+            res = (countpasses / allpassesofdataset) - (countfails / (1 + allfailsofdataset))
 
         elif fitnessfunc == 'Tarantula':
 
-          if len(truepoints) !=0 :
+            res = (countpasses /allpassesofdataset )/((countfails /allfailsofdataset ) + (countpasses /allpassesofdataset ) )
   
-             res = (countpasses /allpassesofdataset )/((countfails /allfailsofdataset ) + (countpasses /allpassesofdataset ) )
-  
-          else:
-  
-             res = -100000
-
         elif fitnessfunc == 'Ochiai':
-          
-          if len(truepoints) != 0:
+
+            res = countpasses / (math.sqrt(allpassesofdataset * (countfails + countpasses)))
         
-              res = countpasses / (math.sqrt(allpassesofdataset * (countfails + countpasses)))
-        
-          else:
-              res = -1000
 
     return res,
 
