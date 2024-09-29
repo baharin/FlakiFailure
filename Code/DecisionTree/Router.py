@@ -399,7 +399,14 @@ for hh in range(1, 10):
   fpaths = []
   for run in range(20):
 
-    classifier = DecisionTreeClassifier(max_depth = 5, class_weight= 'balanced')
+    dtmodel = BayesSearchCV(DecisionTreeClassifier(max_depth = 5, class_weight = 'balanced'), {'prune_size': [0.1, 0.8], 'k': [1, 3]}, optimizer_kwargs = {'acq_func': 'EI'})
+
+    try:
+      dtmodel.fit(X, y)
+      params = dtmodel.best_params_
+      classifier = DecisionTreeClassifier(**params)
+    except:
+      classifier = DecisionTreeClassifier(max_depth = 5, class_weight = 'balanced')
 
     classifier.fit(X, y)
 
