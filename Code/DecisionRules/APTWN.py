@@ -222,8 +222,14 @@ for hh in range(1, 10):
   rules = []
   for i in range(20):
 
-   
-    clf = lw.RIPPER(max_rule_conds=5)
+    drmodel = BayesSearchCV(lw.RIPPER(max_rule_conds=5), {'prune_size': [0.1, 0.8], 'k': [1, 3]}, optimizer_kwargs = {'acq_func': 'EI'})
+
+    try:
+      drmodel.fit(X_train, y_train, pos_class = 1)
+      params = drmodel.best_params_
+      clf = lw.RIPPER(**params)
+    except:
+      clf = lw.RIPPER(max_rule_conds=5) #if bayesian cannot find a good model, i just use default
 
     clf.fit(X, y, pos_class = 0)
 
@@ -292,7 +298,14 @@ for hh in range(1, 10):
   rules = []
   for i in range(20):
 
-    clf = lw.RIPPER(max_rule_conds=5)
+    drmodel = BayesSearchCV(lw.RIPPER(max_rule_conds=5), {'prune_size': [0.1, 0.8], 'k': [1, 3]}, optimizer_kwargs = {'acq_func': 'EI'})
+
+    try:
+      drmodel.fit(X_train, y_train, pos_class = 1)
+      params = drmodel.best_params_
+      clf = lw.RIPPER(**params)
+    except:
+      clf = lw.RIPPER(max_rule_conds=5) #if bayesian cannot find a good model, i just use default
 
     clf.fit(X, y, pos_class = 1)
 
