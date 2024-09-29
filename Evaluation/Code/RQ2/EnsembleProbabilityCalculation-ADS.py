@@ -353,5 +353,5 @@ for hh in range(0, 10):
   data[120:149] = CalculatePerformance(data[120:149].reset_index(), trainingsetbeamngtownR2toR4, 'beamng-town-R2toR4', 'Label(Distance)').drop('index', axis = 1)
   data[150:179] = CalculatePerformance(data[150:179].reset_index(), trainingsetbeamngtownR2toR4, 'beamng-town-R2toR4', 'Label(Ultra)').drop('index', axis = 1)
 
-  data.to_excel('EnsembleProbs'+str(hh)+'.xlsx')
+  data.to_excel('EnsembleADSProbs'+str(hh)+'.xlsx')
   
