@@ -26,7 +26,7 @@ for ind1, s in enumerate(sub):
   for ind2, t in enumerate(ts):
     for kk in range(1, 10):
 
-      data = pd.read_excel('GPresults_failclass'+s+'_'+t+'_'+str(k)+'.xlsx')
+      data = pd.read_excel('GPresults_failclass'+s+'_'+t+'_'+str(k)+'.xlsx')  #change accordingly for pass class
 
       for i in range(len(data.index)):
 
@@ -54,5 +54,5 @@ for ind1, s in enumerate(sub):
           results.loc[results.shape[0], :] = str(asrts[j])
 
         
-      with pd.ExcelWriter('pure fail class rules - GP2.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+      with pd.ExcelWriter('pure fail class rules - GP2.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer: #change accordingly for pass class
         results.to_excel(writer, sheet_name='dataset'+str(kk), index=False)
