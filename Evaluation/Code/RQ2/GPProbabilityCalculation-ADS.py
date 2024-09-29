@@ -322,4 +322,4 @@ for hh in range(0, 10):
   data[360:449] = CalculatePerformance(data[360:449].reset_index(), trainingsetbeamngtownR2toR4, 'beamng-town-R2toR4', 'Label(Distance)').drop('index', axis = 1)
   data[450:539] = CalculatePerformance(data[450:539].reset_index(), trainingsetbeamngtownR2toR4, 'beamng-town-R2toR4', 'Label(Ultra)').drop('index', axis = 1)
 
-  data.to_excel('resultsdataset'+str(hh)+'.xlsx')
+  data.to_excel('GPProbs'+str(hh)+'.xlsx')
