@@ -8,6 +8,7 @@ from sklearn.tree import _tree
 import re
 import matplotlib.pyplot as plt
 import pickle
+from skopt import BayesSearchCV
 
 def get_rules(tree, feature_names, class_names): #https://mljar.com/blog/extract-rules-decision-tree/
     tree_ = tree.tree_
