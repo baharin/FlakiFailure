@@ -191,8 +191,13 @@ for hh in range(1, 10):
   rulesresults = pd.DataFrame(columns = ['Run'])
   for i in range(20):
 
-    clf = lw.RIPPER(max_rule_conds= 16)
-
+    try:
+      drmodel.fit(X_train, y_train, pos_class = 'PASS')
+      params = drmodel.best_params_
+      clf = lw.RIPPER(**params)
+    except:
+      clf = lw.RIPPER(max_rule_conds=16) #if bayesian cannot find a good model, i just use default
+    
     clf.fit(X, y, pos_class = 'FAIL')
 
     with open('router_sum_fail_decisionrule_dataset'+str(hh)+'_run'+str(i)+'.pkl', 'wb') as file:
@@ -254,7 +259,12 @@ for hh in range(1, 10):
   rulesresults = pd.DataFrame(columns = ['Run'])
   for i in range(20):
 
-    clf = lw.RIPPER(max_rule_conds= 16)
+    try:
+      drmodel.fit(X_train, y_train, pos_class = 'PASS')
+      params = drmodel.best_params_
+      clf = lw.RIPPER(**params)
+    except:
+      clf = lw.RIPPER(max_rule_conds=16) #if bayesian cannot find a good model, i just use default
 
     clf.fit(X, y, pos_class = 'PASS')
 
