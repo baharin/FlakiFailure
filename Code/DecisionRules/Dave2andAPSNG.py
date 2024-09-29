@@ -291,6 +291,7 @@ for hh in range(1, 10):
   rules = []
   for i in range(20):
 
+    drmodel = BayesSearchCV(lw.RIPPER(max_rule_conds=5), {'prune_size': [0.1, 0.8], 'k': [1, 3]}, optimizer_kwargs = {'acq_func': 'EI'})
 
     try:
       drmodel.fit(X_train, y_train, pos_class = 'PASS')
