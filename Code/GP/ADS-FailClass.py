@@ -529,6 +529,6 @@ for k in range(1, 10):
 
 
 
-results.to_excel('GPresults_'+a+'_'+str(k)+'.xlsx')
+    results.to_excel('GPresults_failclass'+a+'_'+fitnessfunc+'_'+str(k)+'.xlsx')
 
-bestfitnessovertime.to_excel('BestFitnessesOvertime_'+a+'_'+str(k)+'.xlsx')
+    bestfitnessovertime.to_excel('BestFitnessesOvertime_failclass'+a+'_'+fitnessfunc+'_'+str(k)+'.xlsx')
