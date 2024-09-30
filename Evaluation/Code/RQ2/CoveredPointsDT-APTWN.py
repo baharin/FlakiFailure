@@ -841,7 +841,7 @@ for hh in range(0, 10):
   for theta in thetas:
     assertions = pd.read_excel('...\\path_to_file\\DT and DR Assertions.xlsx', sheet_name = 'dataset'+str(hh))
 
-    testset = pd.read_excel('C:/Users/Mehrdad/Documents/rabbitrun/meetings/Extending Paper 2/testset/beamng town - Baharin - Keeplane/preprocessedkeeplanetestset.xlsx')
+    testset = pd.read_excel('...\\path_to_file\\APTWN_R1_testset.xlsx')
    
     cols = ['Weather', 'MaxSpeed' , 'Traffic Amount']
     # testset['Label'] = testset['Label(Distance)']
@@ -867,6 +867,6 @@ for hh in range(0, 10):
 
     file_exists = os.path.isfile('dr-coveredpointswithhighestprecisionassertion-'+datasett+'-theta'+str(theta)+'-testset.xlsx')
 
-    with pd.ExcelWriter('dr-coveredpointswithhighestprecisionassertion-'+datasett+'-theta'+str(theta)+'-testset.xlsx', engine = 'openpyxl', mode = 'a' if file_exists else 'w') as writer:
+    with pd.ExcelWriter('dt-coveredpoints-'+datasett+'-theta'+str(theta)+'-testset.xlsx', engine = 'openpyxl', mode = 'a' if file_exists else 'w') as writer:
       res.to_excel(writer, sheet_name = 'dataset'+str(hh), index = False)
 
