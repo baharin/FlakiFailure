@@ -680,7 +680,7 @@ def SimplifyRule(rule):
   return rule
 
 
-def GetFailAndPassAssertions(assertions, theta):
+def GetFailAndPassAssertions(failassertions, passassertions, theta):
 
   cols = ['Run'+str(i) for i in range(1, 21)]
 
@@ -697,19 +697,18 @@ def GetFailAndPassAssertions(assertions, theta):
     Passassertionsprobs = []
 
     i = 0
-    while i < len(assertions.index) and assertions.loc[i, col] != '[]' and type(assertions.loc[i, col]) != float:
+    while i < len(failassertions.index) and failassertions.loc[i, col] != '[]' and type(failassertions.loc[i, col]) != float:
 
-      if ast.literal_eval(assertions.loc[i, col+'Prob'])[0] >= theta:
-        Failassertions.append(ast.literal_eval(assertions.loc[i, col]))
-        Failassertionsprobs.append((ast.literal_eval(assertions.loc[i, col+'Prob'])[0], ast.literal_eval(assertions.loc[i, col+'Prob'])[1]))
+      if ast.literal_eval(failassertions.loc[i, col+'Prob'])[0] >= theta:
+        Failassertions.append(failassertions.loc[i, col])
+        Failassertionsprobs.append((ast.literal_eval(failassertions.loc[i, col+'Prob'])[0], ast.literal_eval(failassertions.loc[i, col+'Prob'])[1]))
       i = i + 1
 
-    i = i + 1
-    while i < len(assertions.index) and assertions.loc[i, col] != '[]' and type(assertions.loc[i, col]) != float :
-      # print(assertions.loc[i, col], type(assertions.loc[i, col]))
-      if ast.literal_eval(assertions.loc[i, col+'Prob'])[0] >= theta:
-        Passassertions.append(ast.literal_eval(assertions.loc[i, col]))
-        Passassertionsprobs.append((ast.literal_eval(assertions.loc[i, col+'Prob'])[0],ast.literal_eval(assertions.loc[i, col+'Prob'])[1] ))
+    i = 0
+    while i < len(passassertions.index) and passassertions.loc[i, col] != '[]' and type(passassertions.loc[i, col]) != float:
+      if ast.literal_eval(passassertions.loc[i, col+'Prob'])[0] >= theta:
+        Passassertions.append(passassertions.loc[i, col])
+        Passassertionsprobs.append((ast.literal_eval(passassertions.loc[i, col+'Prob'])[0],ast.literal_eval(passassertions.loc[i, col+'Prob'])[1] ))
       i = i + 1
 
     asserts.append([Failassertions, Passassertions])
@@ -717,9 +716,33 @@ def GetFailAndPassAssertions(assertions, theta):
 
   return asserts, probs
 
+def ConsistencyCheck(asserts, probs):
+
+  for ii in range(len(asserts)):
+
+    fail_assertions = asserts[ii][0]
+    pass_assertions = asserts[ii][1]
+
+    new_fail_assertions, new_pass_assertions = ConsistencyCheckingRouter.process_assertions(fail_assertions, pass_assertions)
+
+    asserts[ii][0] = new_fail_assertions
+    asserts[ii][1] = new_pass_assertions
+
+    map_probs_fail = {fail_assertions[i]: probs[ii][0][i] for i in range(len(fail_assertions))}
+    map_probs_pass = {pass_assertions[i]: probs[ii][1][i] for i in range(len(pass_assertions))}
+
+    new_probs_fail = [map_probs_fail[value] for value in new_fail_assertions]
+    new_probs_pass = [map_probs_pass[value] for value in new_pass_assertions]
+
+    probs[ii][0] = new_probs_fail
+    probs[ii][1] = new_probs_pass
+    
+  return asserts, probs
+
 
 import pandas as pd
 import ast
+import ConsistencyCheckADS
 
 model = 'dave2'
 
@@ -731,7 +754,9 @@ ts = ['Tarantula', 'Ochiai', 'Naish']
 for theta in thetas:
     for ind, t in enumerate(ts):
         for hh in range(0, 10):
-            assertions = pd.read_excel('...\\path_to_file\\GP Assertions', sheet_name = 'dataset'+str(hh))
+            failassertions = pd.read_excel('...\\path_to_file\\GP - FailClass Assertions.xlsx', sheet_name='dataset'+str(hh))
+            passassertions = pd.read_excel('...\\path_to_file\\GP - PassClass Assertions.xlsx', sheet_name='dataset'+str(hh))
+
             if model == 'APSNG':
                 testset = pd.read_excel('...\\path_to_file\\APSNG_testset.xlsx')
                 offset = 0
@@ -746,14 +771,10 @@ for theta in thetas:
             # testset = Preprocess(testset)
             res = testset
 
-            asserts, probs = GetFailAndPassAssertions(assertions[ind*30 + offset:ind*30 + 29 + offset].reset_index(), theta)
+            asserts, probs = GetFailAndPassAssertions(failassertions[ind*30 + offset:ind*30 + 29 + offset].reset_index(),passassertions[ind*30 + offset:ind*30 + 29 + offset].reset_index(), theta)
 
-            for j in range(len(asserts)):
-                print(asserts[j])
-                print(probs[j])
-
-
-            print('***********')
+            asserts, probs = ConsistencyCheck(asserts, probs)
+          
             res = CalculatePerformance(asserts, probs, testset, model, res, 'gp'+t)
 
             import os 
