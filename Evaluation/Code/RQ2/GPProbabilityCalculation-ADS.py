@@ -313,7 +313,7 @@ for hh in range(0, 10):
 
 
 
-  data = pd.read_excel('GP Assertions.xlsx', sheet_name='dataset'+str(hh))
+  data = pd.read_excel('GP - FailClass Assertions.xlsx', sheet_name='dataset'+str(hh)) #change accordingly for pass class 
 
   data[0:89] = CalculatePerformance(data[0:89].reset_index(), trainingsetbeamngcmp, 'beamng', 'TestOutcome').drop('index', axis = 1)
   data[90:179] = CalculatePerformance(data[90:179].reset_index(), trainingsetdave2, 'dave2', 'TestOutcome').drop('index', axis = 1)
