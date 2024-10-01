@@ -797,8 +797,32 @@ def GetFailAndPassAssertions(assertions, theta):
 
   return asserts, probs
 
+def ConsistencyCheck(asserts, probs):
+
+  for ii in range(len(asserts)):
+
+    fail_assertions = asserts[ii][0]
+    pass_assertions = asserts[ii][1]
+
+    new_fail_assertions, new_pass_assertions = ConsistencyCheckingRouter.process_assertions(fail_assertions, pass_assertions)
+
+    asserts[ii][0] = new_fail_assertions
+    asserts[ii][1] = new_pass_assertions
+
+    map_probs_fail = {fail_assertions[i]: probs[ii][0][i] for i in range(len(fail_assertions))}
+    map_probs_pass = {pass_assertions[i]: probs[ii][1][i] for i in range(len(pass_assertions))}
+
+    new_probs_fail = [map_probs_fail[value] for value in new_fail_assertions]
+    new_probs_pass = [map_probs_pass[value] for value in new_pass_assertions]
+
+    probs[ii][0] = new_probs_fail
+    probs[ii][1] = new_probs_pass
+    
+  return asserts, probs
+  
 import pandas as pd
 import ast
+import ConsistencyCheckingRouter
 
 thetas = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
 
@@ -817,12 +841,8 @@ for theta in thetas:
 
     asserts, probs = GetFailAndPassAssertions(assertions[180:199].reset_index(), theta)
 
-    for j in range(len(asserts)):
-      print(asserts[j])
-      print(probs[j])
-
-
-    print('***********')
+    asserts, probs = ConsistencyCheck(asserts, probs)
+    
     res = CalculatePerformance(asserts, probs, testset, res, 'Ensemble') #ensemble
 
     import os 
