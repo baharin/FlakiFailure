@@ -745,11 +745,32 @@ def GetFailAndPassAssertions(assertions, theta):
     probs.append([Failassertionsprobs, Passassertionsprobs])
 
   return asserts, probs
+def ConsistencyCheck(asserts, probs):
 
+  for ii in range(len(asserts)):
+
+    fail_assertions = asserts[ii][0]
+    pass_assertions = asserts[ii][1]
+
+    new_fail_assertions, new_pass_assertions = ConsistencyCheckingADS.process_assertions(fail_assertions, pass_assertions)
+
+    asserts[ii][0] = new_fail_assertions
+    asserts[ii][1] = new_pass_assertions
+
+    map_probs_fail = {fail_assertions[i]: probs[ii][0][i] for i in range(len(fail_assertions))}
+    map_probs_pass = {pass_assertions[i]: probs[ii][1][i] for i in range(len(pass_assertions))}
+
+    new_probs_fail = [map_probs_fail[value] for value in new_fail_assertions]
+    new_probs_pass = [map_probs_pass[value] for value in new_pass_assertions]
+
+    probs[ii][0] = new_probs_fail
+    probs[ii][1] = new_probs_pass
+    
+  return asserts, probs
 
 import pandas as pd
 import ast
-
+import ConsistencyCheckingADS
 
 model = 'beamng-town-R1'
 
@@ -770,6 +791,8 @@ for hh in range(0, 10):
     res = testset
 
     asserts, probs = GetFailAndPassAssertions(assertions[200:219].reset_index(), theta)
+
+    asserts, probs = ConsistencyCheck(asserts, probs)
 
     res = CalculatePerformance(asserts, probs, testset, model, res, 'dr')
 
