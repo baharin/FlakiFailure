@@ -559,7 +559,6 @@ for hh in range(0, 10):
     cols = ['Weather', 'Maxspeed' , 'MAX_ANGLE']
     collabel = 'TestOutcome'
 
-    testset = HandleFlakyTests(testset, 10, cols, collabel, model)
     testset = Preprocess(testset)
     res = testset
 
