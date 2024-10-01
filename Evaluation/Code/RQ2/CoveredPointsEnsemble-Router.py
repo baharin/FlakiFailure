@@ -1,3 +1,4 @@
+import re
 def ExtractRanges(rule):
 
   dictt = {'ARG5+ARG6+ARG7': [0, 1000], 'ARG0': [0, 400], 'ARG1': [0, 350], 'ARG2': [0, 306],'ARG3': [0, 267],'ARG4': [0, 234],'ARG5': [0, 205],'ARG6': [0, 179],'ARG7': [0, 157]}
@@ -30,52 +31,7 @@ def Preprocess(data):
 
   return data
 
-def RemoveFlakyTests(data, rep):
 
-  i = 0
-  # while i <len(data.index) - 1:
-
-  #   data.reset_index(drop=True, inplace=True)
-
-  #   j = i + 1
-
-  #   while j < len(data.index):
-
-  #     if (data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list() == data.loc[j, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list()) and (data.loc[i, 'Label'] != data.loc[j, 'Label']):
-  #       data = data.drop([i, j])
-  #       i = -1
-  #       break
-
-  #     j = j + 1
-  #   i = i + 1
-
-  while i < len(data.index):
-
-    flag = False
-
-    data.reset_index(drop=True, inplace=True)
-
-    for j in range(rep):
-
-      if data.loc[i + j, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list() == data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list() and data.loc[i, 'Label'] != data.loc[i+j, 'Label']:
-
-        flag = True
-        break
-
-    if flag == True: #the test is flaky
-
-      data = data.drop([i + j for j in range(rep)])
-
-      i = 0
-
-    else:
-      i = i + rep
-
-
-
-  return data
-
-import re
 
 def ExtractVars(rulee):
 
@@ -534,23 +490,6 @@ def CalculatePerformanceDT(rule, dataset, column, res, alg, precision, recall):
 
             res.at[h, 'Covered'+alg] = ('Yes', rule, precision, recall)
 
-        # if dataset.loc[h, 'Label'] == 0:
-
-        #   # print('fail')
-        #   countfails = countfails + 1
-
-
-  # print(countfails, truepoints)
-  # if truepoints != 0 :
-  #   fp = countfails / truepoints
-
-  # else:
-  #   fp = 0
-
-  # allfailsofdataset = dataset['Label'].value_counts()[0]
-  # # print('all fails of dataset', allfailsofdataset)
-
-  # fr = countfails/allfailsofdataset
 
   return res
 
@@ -798,44 +737,6 @@ def FeatureEngineering(data, ranges):
 
   return data
 
-def HandleFlakyTests(data, rep):
-
-  i = 0
-  k = 0
-
-  newdata = pd.DataFrame(columns = ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW", 'Label'])
-
-  while i < len(data.index):
-
-    countfails = 0
-    countpass = 0
-
-    newdata.loc[k, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]] = data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]]
-
-    for j in range(rep):
-
-      if data.loc[i + j, "Label"] == 1:
-
-        countpass = countpass + 1
-
-      elif data.loc[i + j, "Label"] == 0:
-
-        countfails = countfails + 1
-
-    if countpass > countfails:
-
-      newdata.loc[k, 'Label'] = 1
-
-    else:
-
-      newdata.loc[k, 'Label'] = 0
-
-    i = i + rep
-
-    k = k + 1
-
-  return newdata
-
 
 def ReduceListBasedonTheta(listofassertions, theta, precisions, recalls):
 
@@ -909,8 +810,6 @@ for theta in thetas:
     assertions = pd.read_excel('...\\path_to_file\\Ensemble Assertions.xlsx', sheet_name = 'dataset'+str(hh))
     
     testset = pd.read_excel('...\\path_to_file\\Router_testset.xlsx')
-
-    testset = HandleFlakyTests(testset, rep = 10)
 
     testset['TIN5+TIN6+TIN7'] = testset['TIN 5 Req-BW'] + testset['TIN 6 Req-BW'] + testset['TIN 7 Req-BW']
     testset = Preprocess(testset)
