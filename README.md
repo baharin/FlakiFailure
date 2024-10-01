@@ -1,4 +1,4 @@
-# Reducing Test Oracle Cost for Flaky Simulators of Cyber-Physical Systems
+# Robust Automated Test Oracles for Flaky Cyber-Physical System Simulators
 
 In this paper, we propose a novel approach to developing test oracles for CPS as a set of probabilistic and interpretable assertions defined over the inputs of the CPS under test. We propose two methods for generating assertion-based test oracles: one using genetic programming (GP) and the other using interpretable ML techniques, specifically decision trees (DT) and decision rules (DR). Below we describe each step briefly: 
 
