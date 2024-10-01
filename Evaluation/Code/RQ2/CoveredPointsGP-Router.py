@@ -698,7 +698,7 @@ def ReduceListBasedonTheta(listofassertions, theta, precisions, recalls):
 
   return listofassertions, precisions, recalls
 
-def GetFailAndPassAssertions(assertions, theta):
+def GetFailAndPassAssertions(failassertions, passassertions, theta):
 
   cols = ['Run'+str(i) for i in range(1, 21)]
 
@@ -715,21 +715,18 @@ def GetFailAndPassAssertions(assertions, theta):
     Passassertionsprobs = []
 
     i = 0
-    while i < len(assertions.index) and assertions.loc[i, col] != '[]' and type(assertions.loc[i, col]) != float:
+    while i < len(failassertions.index) and failassertions.loc[i, col] != '[]' and type(failassertions.loc[i, col]) != float:
 
-      if ast.literal_eval(assertions.loc[i, col+'Prob'])[0] >= theta:
-        # print(assertions.loc[i, col], type(assertions.loc[i, col]))
-        # print(ast.literal_eval(assertions.loc[i, col]))
-        Failassertions.append(assertions.loc[i, col])
-        Failassertionsprobs.append((ast.literal_eval(assertions.loc[i, col+'Prob'])[0], ast.literal_eval(assertions.loc[i, col+'Prob'])[1]))
+      if ast.literal_eval(failassertions.loc[i, col+'Prob'])[0] >= theta:
+        Failassertions.append(failassertions.loc[i, col])
+        Failassertionsprobs.append((ast.literal_eval(failassertions.loc[i, col+'Prob'])[0], ast.literal_eval(failassertions.loc[i, col+'Prob'])[1]))
       i = i + 1
 
-    i = i + 1
-    # print(' i am here ', type(assertions.loc[i, col]), assertions.loc[i, col], i, col)
-    while i < len(assertions.index) and assertions.loc[i, col] != '[]' and type(assertions.loc[i, col]) != float:
-      if ast.literal_eval(assertions.loc[i, col+'Prob'])[0] >= theta:
-        Passassertions.append(assertions.loc[i, col])
-        Passassertionsprobs.append((ast.literal_eval(assertions.loc[i, col+'Prob'])[0],ast.literal_eval(assertions.loc[i, col+'Prob'])[1] ))
+    i = 0
+    while i < len(passassertions.index) and passassertions.loc[i, col] != '[]' and type(passassertions.loc[i, col]) != float:
+      if ast.literal_eval(passassertions.loc[i, col+'Prob'])[0] >= theta:
+        Passassertions.append(passassertions.loc[i, col])
+        Passassertionsprobs.append((ast.literal_eval(passassertions.loc[i, col+'Prob'])[0],ast.literal_eval(passassertions.loc[i, col+'Prob'])[1] ))
       i = i + 1
 
     asserts.append([Failassertions, Passassertions])
@@ -753,20 +750,17 @@ for theta in thetas:
 
     for hh in range(0, 10):
 
-      assertions = pd.read_excel('...\\path_to_file\\GP Assertions.xlsx', sheet_name='dataset'+str(hh))
+      failassertions = pd.read_excel('...\\path_to_file\\GP - FailClass Assertions.xlsx', sheet_name='dataset'+str(hh))
+      passassertions = pd.read_excel('...\\path_to_file\\GP - PassClass Assertions.xlsx', sheet_name='dataset'+str(hh))
 
       testset = pd.read_excel('...\\path_to_file\\Router_testset.xlsx')
       
       res = testset
 
-      asserts, probs = GetFailAndPassAssertions(assertions[ind*30 + 540:ind*30 + 29 + 540].reset_index(), theta)
+      asserts, probs = GetFailAndPassAssertions(failassertions[ind*30 + 540:ind*30 + 29 + 540].reset_index(), passassertions[ind*30 + 540:ind*30 + 29 + 540].reset_index(), theta)
 
-      for j in range(len(asserts)):
-        print(asserts[j])
-        print(probs[j])
-
-
-      print('***********')
+      asserts, probs = ConsistencyCheck()
+      
       res = CalculatePerformance(asserts, probs, testset, res, 'gp'+t)
 
       import os 
