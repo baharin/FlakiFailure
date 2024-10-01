@@ -723,7 +723,7 @@ def ConsistencyCheck(asserts, probs):
     fail_assertions = asserts[ii][0]
     pass_assertions = asserts[ii][1]
 
-    new_fail_assertions, new_pass_assertions = ConsistencyCheckingRouter.process_assertions(fail_assertions, pass_assertions)
+    new_fail_assertions, new_pass_assertions = ConsistencyCheckingADS.process_assertions(fail_assertions, pass_assertions)
 
     asserts[ii][0] = new_fail_assertions
     asserts[ii][1] = new_pass_assertions
