@@ -23,14 +23,9 @@ import ast
 
 ts = ['Tarantula', 'Ochiai', 'Naish']
 for ind1, t in enumerate(ts):
-    for kk in range(1, 10):
+    for kk in range(0, 10):
 
-        try:
-            data = pd.read_excel('GPresults_Router_failclass'+str(k)+'.xlsx')
-        except:
-            continue
-
-        results = pd.read_excel('pure fail class rules - GP2.xlsx', sheet_name='dataset'+str(kk)) #change for pass class
+        results = pd.read_excel('...\\path_to_file\\GP - FailClass Assertions.xlsx', sheet_name='dataset'+str(kk)) #change for pass class
         
         counter = 0
 
@@ -61,5 +56,5 @@ for ind1, t in enumerate(ts):
             counter = counter + 1
 
 
-        with pd.ExcelWriter('pure fail class rules - GP2.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer: #change for pass class
+        with pd.ExcelWriter('GP - FailClass Assertions.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer: #change for pass class
             results.to_excel(writer, sheet_name='dataset'+str(kk), index=False)
