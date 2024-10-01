@@ -382,44 +382,6 @@ def FeatureEngineering(data):
 
   return data
 
-def HandleFlakyTests(data, rep):
-
-  i = 0
-  k = 0
-
-  newdata = pd.DataFrame(columns = ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW", 'Label'])
-
-  while i < len(data.index):
-
-    countfails = 0
-    countpass = 0
-
-    newdata.loc[k, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]] = data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]]
-
-    for j in range(rep):
-
-      if data.loc[i + j, "Label"] == 1:
-
-        countpass = countpass + 1
-
-      elif data.loc[i + j, "Label"] == 0:
-
-        countfails = countfails + 1
-
-    if countpass > countfails:
-
-      newdata.loc[k, 'Label'] = 1
-
-    else:
-
-      newdata.loc[k, 'Label'] = 0
-
-    i = i + rep
-
-    k = k + 1
-
-  return newdata
-
 def Preprocess(data):
   
   for i in range(len(data.index)):
