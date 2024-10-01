@@ -1,39 +1,3 @@
-def RemoveFlakyTests(data, rep):
-
-  i = 0
-
-
-  while i < len(data.index):
-
-    flag = False
-
-    data.reset_index(drop=True, inplace=True)
-
-    for j in range(rep):
-
-      if data.loc[i + j, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list() == data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]].to_list() and data.loc[i, 'Label'] != data.loc[i+j, 'Label']:
-
-        flag = True
-        break
-
-    if flag == True: #the test is flaky
-
-      data = data.drop([i + j for j in range(rep)])
-
-      i = 0
-
-    else:
-      i = i + rep
-
-
-
-
-
-
-
-
-  return data
-
 import re
 
 def ExtractVars(rulee):
@@ -713,44 +677,6 @@ def FeatureEngineering(data, ranges):
 
   return data
 
-def HandleFlakyTests(data, rep):
-
-  i = 0
-  k = 0
-
-  newdata = pd.DataFrame(columns = ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW", 'Label'])
-
-  while i < len(data.index):
-
-    countfails = 0
-    countpass = 0
-
-    newdata.loc[k, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]] = data.loc[i, ["TIN 0 Req-BW", "TIN 1 Req-BW", "TIN 2 Req-BW", "TIN 3 Req-BW", "TIN 4 Req-BW", "TIN 5 Req-BW", "TIN 6 Req-BW", "TIN 7 Req-BW"]]
-
-    for j in range(rep):
-
-      if data.loc[i + j, "Label"] == 1:
-
-        countpass = countpass + 1
-
-      elif data.loc[i + j, "Label"] == 0:
-
-        countfails = countfails + 1
-
-    if countpass > countfails:
-
-      newdata.loc[k, 'Label'] = 1
-
-    else:
-
-      newdata.loc[k, 'Label'] = 0
-
-    i = i + rep
-
-    k = k + 1
-
-  return newdata
-
 
 def ReduceListBasedonTheta(listofassertions, theta, precisions, recalls):
 
@@ -829,10 +755,7 @@ for theta in thetas:
 
       assertions = pd.read_excel('...\\path_to_file\\GP Assertions.xlsx', sheet_name='dataset'+str(hh))
 
-      
       testset = pd.read_excel('...\\path_to_file\\Router_testset.xlsx')
-      
-      testset = HandleFlakyTests(testset, rep = 10)
       
       res = testset
 
