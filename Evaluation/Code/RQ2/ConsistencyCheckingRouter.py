@@ -101,8 +101,6 @@ def remove_common_elements(list1, list2):
     return list1, list2
 
 def process_assertions(fail_assertions, pass_assertions):
-    results = []
-    
     inconsistencies = defaultdict(list)
 
     # Solver for Z3
@@ -141,6 +139,4 @@ def process_assertions(fail_assertions, pass_assertions):
         else:
             fail_assertions.remove(item.id)
 
-    results.append((fail_assertions.copy(), pass_assertions.copy()))
-
-    return results
+    return fail_assertions, pass_assertions
