@@ -354,36 +354,6 @@ def Preprocess(dataa):
   return dataa
 
 
-def RemoveFlakyTests(data, rep, features, label):
-
-  i = 0
-  while i < len(data.index):
-
-    flag = False
-
-    data.reset_index(drop=True, inplace=True)
-
-    for j in range(rep):
-
-      # if data.loc[i + j, ["Weather", "Maxspeed", "MAX_ANGLE"]].to_list() == data.loc[i, ["Weather", "Maxspeed", "MAX_ANGLE"]].to_list() and data.loc[i, 'TestOutcome'] != data.loc[i+j, 'TestOutcome']:
-        if data.loc[i + j, features].to_list() == data.loc[i, features].to_list() and data.loc[i, label] != data.loc[i+j, label]:
-
-          flag = True
-          break
-
-    if flag == True: #the test is flaky
-
-      # print('yes')
-
-      data = data.drop([i + j for j in range(rep)])
-
-      i = 0
-
-    else:
-      i = i + rep
-
-  return data
-
 def FindGroups(df):
 
   groups = []
@@ -590,59 +560,6 @@ def PreprocessRule(rulee):
 
   return listt
 
-def HandleFlakyTests(data, rep, features, label, model):
-
-  i = 0
-  k = 0
-
-  featurescopy = features
-  featurescopy.append(label)
-
-  newdata = pd.DataFrame(columns = featurescopy)
-
-  while i < len(data.index):
-
-    countfails = 0
-    countpass = 0
-
-    newdata.loc[k, features] = data.loc[i, features]
-
-    for j in range(rep):
-
-      if data.loc[i + j, label] == 1 or data.loc[i + j , label]  == 'PASS':
-
-        countpass = countpass + 1
-
-      elif data.loc[i + j, label] == 0 or data.loc[i + j, label] == 'FAIL':
-
-        countfails = countfails + 1
-
-    if countpass > countfails:
-
-      if 'town' in model:
-
-        newdata.loc[k, label] = 1
-      else:
-
-        newdata.loc[k, label] = 'PASS'
-
-    else:
-      if 'town' in model:
-
-        newdata.loc[k, label] = 0
-
-      else:
-
-        newdata.loc[k, label] = 'FAIL'
-
-    i = i + rep
-
-    k = k + 1
-
-  return newdata
-
-
-
 
 def PreprocessWithoutRepetition(data, rep, model):
 
@@ -823,7 +740,6 @@ for theta in thetas:
             testset['Label'] = testset['Label(Ultrasound)']
             collabel = 'Label'
 
-            testset = HandleFlakyTests(testset, 10, cols, collabel, model)
             # testset = Preprocess(testset)
             res = testset
 
@@ -843,5 +759,3 @@ for theta in thetas:
 
             with pd.ExcelWriter('GP-'+t+'-coveredpoints-ultra-theta'+str(theta)+'-testset.xlsx', engine = 'openpyxl', mode = 'a' if file_exists else 'w') as writer:
                 res.to_excel(writer, sheet_name = 'dataset'+str(hh), index = False)
-
-
