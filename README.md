@@ -20,7 +20,7 @@ In this paper, we present a novel approach for creating test oracles for CPS by 
 
   * <b> Condition Inference by DT/DR </b> DT generates tree-like structure of decisions, while DR establishes a set of if-then rules for classification based on input variables. 
 
-* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving probabilistic assertions by calculating each condition’s probability based on its precision in classifying pass or fail tests in the training set. Next, we ensure that the pass and fail assertions are consistent using Z3 SMT solver.
+* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving probabilistic assertions by calculating each condition's probability based on its precision in classifying pass or fail tests in the training set. Next, we ensure that the pass and fail assertions are consistent using Z3 SMT solver.
 </p>
 
 License 
