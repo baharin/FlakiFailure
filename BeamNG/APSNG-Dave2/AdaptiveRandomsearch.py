@@ -18,45 +18,10 @@ from deepjanus_seed_generator import *
 
 beamng_home = '...\\path_to_file\\BeamNG.tech.v0.26.2.0'
 beamng_user = '...\\path_to_file\\BeamNG.tech.v0.26.2.0_user'
+dave2_model = '...\\path_to_file\\dave2'
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(sys.argv[0]))
-
-OUTPUT_RESULTS_TO = 'results'
-module_name = 'deepjanus_seed_generator'
-class_name = 'OurAmbieGenGenerator'
-
-module = importlib.import_module(module_name)
-the_class = getattr(module, class_name)
-
-
-default_output_folder = os.path.join(get_script_path(), OUTPUT_RESULTS_TO)
-try:
-    os.makedirs(default_output_folder)
-except OSError as e:
-    if e.errno != errno.EEXIST:
-        raise
-
-timestamp_id = time.time() * 100000000 // 1000000
-result_folder = os.path.join(default_output_folder,
-                             "_".join([str(module_name), str(class_name), str(timestamp_id)]))
-try:
-    os.makedirs(result_folder)
-except OSError:
-    log.fatal("An error occurred during test generation")
-    traceback.print_exc()
-    sys.exit(2)
-
-executor = 'beamng'
-
-map_size = 200
-time_budget = 100
-if executor == 'beamng':
-    oob_tolerance = 0.85 
-else:
-    oob_tolerance = 0.95
-
-road_visualizer = None
 
 def ComputeDistance(point, selectedpoints):
     distances = []
@@ -110,6 +75,49 @@ def GeneratePointsNaiveAdaptiveSearch():
 
     return selectedpoints
 
+OUTPUT_RESULTS_TO = 'results'
+
+module = importlib.import_module(module_name)
+the_class = getattr(module, class_name)
+
+
+default_output_folder = os.path.join(get_script_path(), OUTPUT_RESULTS_TO)
+try:
+    os.makedirs(default_output_folder)
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
+
+timestamp_id = time.time() * 100000000 // 1000000
+result_folder = os.path.join(default_output_folder,
+                             "_".join([str(module_name), str(class_name), str(timestamp_id)]))
+try:
+    os.makedirs(result_folder)
+except OSError:
+    log.fatal("An error occurred during test generation")
+    traceback.print_exc()
+    sys.exit(2)
+
+executer = input('Select executer. For the self-driving controller of BeamNG, select beamng and for Dave2 select dave2...')
+if executor == 'beamng':
+    
+    module_name = 'deepjanus_seed_generator'
+    class_name = 'OurAmbieGenGenerator'
+
+elif executer == 'dave2':
+
+    module_name = 'deepjanus_seed_generator'
+    class_name = 'OurRandomJanusGenerator'
+
+map_size = 200
+time_budget = 100
+if executor == 'beamng':
+    oob_tolerance = 0.85 
+else:
+    oob_tolerance = 0.95
+
+road_visualizer = None
+
 roaaaddata = pd.DataFrame(columns = ['Index', 'RoadPoints', 'InterpolatedPoints', 'MinimumOOBDistance', 'MaxCurvature', 'Weather', 'Maxspeed', 'MAX_ANGLE', 'TestOutcome'])
 
 roaaaddata.to_excel('...\\path_to_file\\roaddata.xlsx', index = False)
@@ -126,14 +134,23 @@ while len(roaaaddata.index) < 2000:
 
     for i in range(len(tests)):
 
-        
-        from code_pipeline.beamng_executor import BeamngExecutor
+        if executor == "beamng":
+            from code_pipeline.beamng_executor import BeamngExecutor
 
-        the_executor = BeamngExecutor(result_folder, map_size,
-                                        time_budget=time_budget,
-                                        oob_tolerance=oob_tolerance, max_speed_in_kmh=tests[i][1],
-                                        beamng_home=beamng_home, beamng_user=beamng_user,
-                                        road_visualizer=road_visualizer)
+            the_executor = BeamngExecutor(result_folder, map_size,
+                                          time_budget=time_budget,
+                                          oob_tolerance=oob_tolerance, max_speed_in_kmh=tests[i][1],
+                                          beamng_home=beamng_home, beamng_user=beamng_user,
+                                          road_visualizer=road_visualizer)
+
+        elif executor == "dave2":
+            from code_pipeline.dave2_executor import OurDave2Executor
+
+            the_executor = OurDave2Executor(result_folder, map_size, dave2_model,
+                                         time_budget=time_budget,
+                                         oob_tolerance=oob_tolerance, max_speed=tests[i][1],
+                                         beamng_home=beamng_home, beamng_user=beamng_user,
+                                         road_visualizer=road_visualizer)
 
         test_generator = the_class(executor=the_executor, map_size=map_size, weather = tests[i][0], maxspeed = tests[i][1], max_angle = tests[i][2])
         test_generator.start()
