@@ -56,7 +56,6 @@ class Dave2Executor(AbstractTestExecutor):
 
         # Runtime Monitor about relative movement of the car
         self.last_observation = None
-        # Not sure how to set this... How far can a car move in 250 ms at 5Km/h
         self.min_delta_position = 1.0
         self.road_visualizer = road_visualizer
 
@@ -82,7 +81,6 @@ class Dave2Executor(AbstractTestExecutor):
             if attempt > 2:
                 time.sleep(5)
 
-            #sim = self._run_simulation(the_test)
             sim, minimumoob_distance = self._run_simulation(the_test, weather)
 
             if sim.info.success:
@@ -136,7 +134,7 @@ class Dave2Executor(AbstractTestExecutor):
             # Note This changed since BeamNG.research
             try:
                 os.chdir('...\\path_to_file\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels')
-                print('now this is the directory', os.getcwd())
+
                 shutil.rmtree('...\\path_to_file\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels\\tig')
             except Exception as e:
                 print('While removing...', e)
@@ -157,7 +155,6 @@ class Dave2Executor(AbstractTestExecutor):
                                                           vehicle_state_reader=vehicle_state_reader,
                                                           simulation_name=name)
 
-        # TODO: Hacky - Not sure what's the best way to set this...
         self.sim_data_collector.oob_monitor.tolerance = self.oob_tolerance
         self.sim_data_collector.get_simulation_data().start()
 
@@ -179,11 +176,8 @@ class Dave2Executor(AbstractTestExecutor):
             oobbb =  False
             while  time.time() - startt < 15:
 
-                print("I am checking time ", time.time() - startt)
-
                 self.sim_data_collector.collect_current_data(oob_bb=True)
 
-                print("^^^^^^^^^^^^^^^^^^^^I am OOB DISTANCE ", self.sim_data_collector.states[-1].oob_distance)
                 alloob_distances.append(self.sim_data_collector.states[-1].oob_distance)
 
                 last_state: SimulationDataRecord = self.sim_data_collector.states[-1]
@@ -196,7 +190,7 @@ class Dave2Executor(AbstractTestExecutor):
 
                 #assert not last_state.is_oob, "Car drove out of the lane " + str(self.sim_data_collector.name)
                 if last_state.is_oob:
-                    print('apparently car drove out of lane')
+                    print('Car drove out of lane')
                     oobbb = True
 
                 data_img = cameras.cameras_array['cam_center'].poll()
@@ -256,15 +250,15 @@ class Dave2Executor(AbstractTestExecutor):
             self.brewer = None
 
 ########################################################################################################################
-class Dave2UdacityExecutor(AbstractTestExecutor):
+class OurDave2Executor(AbstractTestExecutor):
 
-    def __init__(self, result_folder, map_size, dave2_udacity,
+    def __init__(self, result_folder, map_size, dave2_model,
                  time_budget=None,
                  oob_tolerance=0.95, max_speed=70,
-                 beamng_home='C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0',
-                 beamng_user='C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0_user', road_visualizer=None,
+                 beamng_home='...\\path_to_file\\BeamNG.tech.v0.26.2.0',
+                 beamng_user='...\\path_to_file\\BeamNG.tech.v0.26.2.0_user', road_visualizer=None,
                  debug=False):
-        super(Dave2UdacityExecutor, self).__init__(result_folder, map_size,
+        super(OurDave2Executor, self).__init__(result_folder, map_size,
                                             time_budget=time_budget, debug=debug)
 
         self.risk_value = 0.7
@@ -273,15 +267,14 @@ class Dave2UdacityExecutor(AbstractTestExecutor):
         self.maxspeed = max_speed
 
         self.brewer: BeamNGBrewer = None
-        self.beamng_home = 'C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0'
-        self.beamng_user = 'C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0_user'
-        self.model_file = dave2_udacity #model path
+        self.beamng_home = '...\\path_to_file\\BeamNG.tech.v0.26.2.0'
+        self.beamng_user = '...\\path_to_file\\BeamNG.tech.v0.26.2.0_user'
+        self.model_file = dave2_model 
 
         if not os.path.exists(self.model_file):
             raise Exception(f'File {self.model_file} does not exist!')
         self.model = None
 
-        # TODO Add checks with default setup. This requires a call to BeamNGpy resolve  (~/Documents/BeamNG.research)
         if self.beamng_user is not None and not os.path.exists(os.path.join(self.beamng_user, "research.key")):
             log.warning("%s is missing but is required to use BeamNG.research", )
 
@@ -369,9 +362,8 @@ class Dave2UdacityExecutor(AbstractTestExecutor):
         if self.beamng_user is not None:
             # Note This changed since BeamNG.research
             try:
-                os.chdir('C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels')
-                print('now this is the directory', os.getcwd())
-                shutil.rmtree('C:\\Users\\Student\\Documents\\BeamNG\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels\\tig')
+                os.chdir('...\\path_to_file\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels')
+                shutil.rmtree('...\\path_to_file\\BeamNG.tech.v0.26.2.0_user\\0.26\\levels\\tig')
             except Exception as e:
                 print('While removing...', e)
             beamng_levels = LevelsFolder(os.path.join(self.beamng_user, '0.26', 'levels'))
@@ -414,11 +406,8 @@ class Dave2UdacityExecutor(AbstractTestExecutor):
             oobbb = False
             while True:  #was time.time() - startt < 15
 
-                print("I am checking time ", time.time() - startt)
-
                 self.sim_data_collector.collect_current_data(oob_bb=True)
 
-                print("^^^^^^^^^^^^^^^^^^^^I am OOB DISTANCE ", self.sim_data_collector.states[-1].oob_distance)
                 alloob_distances.append(self.sim_data_collector.states[-1].oob_distance)
 
                 last_state: SimulationDataRecord = self.sim_data_collector.states[-1]
@@ -433,7 +422,7 @@ class Dave2UdacityExecutor(AbstractTestExecutor):
                 # assert not last_state.is_oob, "Car drove out of the lane " + str(self.sim_data_collector.name)
 
                 if last_state.is_oob == True:
-                    print('Apparently car drove out of lane---------------')
+                    print('Car drove out of lane---------------')
                     oobbb = True
 
 
@@ -457,7 +446,6 @@ class Dave2UdacityExecutor(AbstractTestExecutor):
             traceback.print_exception(type(ex), ex, ex.__traceback__)
         finally:
             self.sim_data_collector.save()
-            print('i am in finally')
             if oobbb == True:
                 self.sim_data_collector.get_simulation_data().end(success=True, exception = AssertionError)
 
