@@ -1,4 +1,4 @@
-#This code adds additional functionalities to the beamng_executer code from https://github.com/sbft-cps-tool-competition/cps-tool-competition/tree/main
+#This code adds additional functionalities to the executer code from https://github.com/sbft-cps-tool-competition/cps-tool-competition/tree/main
 import logging as log
 import random
 import time
