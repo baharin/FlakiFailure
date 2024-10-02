@@ -1,22 +1,26 @@
 # Robust Automated Test Oracles for Flaky Cyber-Physical System Simulators
 
-In this paper, we propose a novel approach to developing test oracles for CPS as a set of probabilistic and interpretable assertions defined over the inputs of the CPS under test. We propose two methods for generating assertion-based test oracles: one using genetic programming (GP) and the other using interpretable ML techniques, specifically decision trees (DT) and decision rules (DR). Below we describe each step briefly: 
+In this paper, we present a novel approach for creating test oracles for CPS by deriving probabilistic and interpretable assertions from the CPS's inputs. For each test case, our assertion-based test oracle determines, without executing the test case, whether it passes, fails, or if the oracle is inconclusive in proposing a verdict. We propose two methods for generating assertion-based test oracles: one using genetic programming (GP) and the other using interpretable ML techniques, specifically decision trees (DT) and decision rules (DR). Below we briefly describe each step of GenTC, our framework for deriving assertion-based test oracles for a given SUT: 
+
+<p align="center">
+  <img src="https://github.com/baharin/FlakiFailure/blob/main/overview.JPG" width="700" height="200" class="centerImage" />
+</p>
 
 * <p> <b> Training Data Generation </b> This step uses adaptive random testing to generate a set of test inputs and execute them using the SUT. </p>
 
-* <p> <b> Condition Inference </b> This step uses the training data to learn conditions for assertions. This step identifies conditions that best explain pass elements or fail elements in the training data. Specifically, the conditions structurally conform to the following grammar: 
+* <p> <b> Condition Inference </b> This step uses the training data to learn conditions for assertion-based test oracles. This step identifies conditions that best explain pass elements or fail elements in the training data. Specifically, in this step, we use alternative techniques to infer conditions from the data. The alternative approaches are Genetic Programming (GP) and ML-based DT and DR techniques. 
+  
+  * <b> Condition Inference by GP </b> The conditions inferred by GP structurally conform to the following grammar: 
 
-<p align="center">
-  <img src="https://github.com/baharin/FlakiFailure/blob/main/grammar.JPG" width="500" height="100" class="centerImage" />
-</p>
-     This grammar generates constraints that are either a single relational expression or conjunctions of relational expressions. The relational expressions relate arithmetic expressions, variables and constants.
-</p>
+    <p align="center">
+      <img src="https://github.com/baharin/FlakiFailure/blob/main/grammar.JPG" width="500" height="100" class="centerImage" />
+    </p>
+         This grammar generates conditions that are either a single relational expression or conjunctions of relational expressions. The relational expressions relate arithmetic expressions, variables and constants.
+    </p>
 
-* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step.
-</p>
+  * <b> Condition Inference by DT/DR </b> DT generates tree-like structure of decisions, while DR establishes a set of if-then rules for classification based on input variables. 
 
-<p align="center">
-  <img src="https://github.com/baharin/FlakiFailure/blob/main/overview.JPG" width="500" height="200" class="centerImage" />
+* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving probabilistic assertions by calculating each condition’s probability based on its precision in classifying pass or fail tests in the training set. Next, we ensure that the pass and fail assertions are consistent using Z3 SMT solver.
 </p>
 
 License 
@@ -36,11 +40,11 @@ Prerequisite
 - Python (3.8.5)
 - BeamNG.tech (0.27) [For ADS]
 - BeamNGpy (1.25.1) [For ADS]
-- Virtual Box 6.1 [For NTSS]
-- Ubuntu 20.04 disc image (https://ubuntu.com/download/desktop) [For NTSS]
-- OpenWrt 19.0.7 (https://downloads.openwrt.org/releases/19.07.8/targets/x86/64/) [For NTSS]
-- nuttcp 8.1.4 (http://nuttcp.net/nuttcp/nuttcp-8.1.4/nuttcp.c) [For NTSS]
-- dpinger (https://github.com/dennypage/dpinger) [For NTSS]
+- Virtual Box 6.1 [For Router]
+- Ubuntu 20.04 disc image (https://ubuntu.com/download/desktop) [For Router]
+- OpenWrt 19.0.7 (https://downloads.openwrt.org/releases/19.07.8/targets/x86/64/) [For Router]
+- nuttcp 8.1.4 (http://nuttcp.net/nuttcp/nuttcp-8.1.4/nuttcp.c) [For Router]
+- dpinger (https://github.com/dennypage/dpinger) [For Router]
 
 Instructions to Run the Algorithms
 --------------------------------------------
