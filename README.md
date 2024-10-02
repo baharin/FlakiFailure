@@ -55,7 +55,7 @@ Instructions to Run the Scripts
   * For the APSNG and Dave2, we use the implementation of [Cyber-Physical Systems Testing Tool Competition](https://github.com/sbft-cps-tool-competition/cps-tool-competition). We used [Ambiegen](https://dl.acm.org/doi/pdf/10.1145/3526072.3527531) as the road generator. For APTWN, we use west_coast_usa map. 
   * Run the scrips in the ``BeamNG`` folder.
 * <b> Router </b>
-  * We follow the instructions by [Jodat et al.](https://github.com/baharin/testGenStrat/tree/main) to setup this case-study.
+  * We follow the instructions by [Jodat et al.](https://github.com/anonpaper23/testGenStrat) to setup this case-study.
   * Run the scripts in the ``Router`` folder.
 
 <b> Condition Inference </b>
