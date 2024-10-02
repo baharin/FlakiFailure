@@ -47,6 +47,16 @@ Prerequisite
 - nuttcp 8.1.4 (http://nuttcp.net/nuttcp/nuttcp-8.1.4/nuttcp.c) [For Router]
 - dpinger (https://github.com/dennypage/dpinger) [For Router]
 
-Instructions to Run the Algorithms
+Instructions to Run the Scripts
 --------------------------------------------
+<b> Training Data Generation </b>
+* <b> ADS </b>
+  * First follow the instructions in the [BeamNG tech documentation](https://documentation.beamng.com/beamng_tech/install/) to install BeamNG.tech
+  * For the APSNG and Dave2, we use the implementation of [Cyber-Physical Systems Testing Tool Competition](https://github.com/sbft-cps-tool-competition/cps-tool-competition). We used [Ambiegen](https://dl.acm.org/doi/pdf/10.1145/3526072.3527531) as the road generator. For APTWN, we use west_coast_usa map. 
+  * Run the scrips in the ``BeamNG`` folder.
+* <b> Router </b>
+  * We follow the instructions by [Jodat et al.](https://github.com/baharin/testGenStrat/tree/main) to setup this case-study.
+  * Run the scripts in the ``Router`` folder.
 
+<b> Condition Inference </b>
+Navigate to the ``Code`` folder which contains subfolders for each condition inference technique. For example, to run the GP technique for the fail class of ADS, execute ``ADS-FailClass.py`` using python. Ensure that the datasets from the ``Datasets`` folder are placed in the same directory as the scripts.
