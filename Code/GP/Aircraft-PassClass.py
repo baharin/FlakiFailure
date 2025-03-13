@@ -19,15 +19,10 @@ def extract_arguments(input_array):
     input_array = input_array.replace('pass_through', '')
     input_array = input_array.replace('sub_and', '')
 
-    # print(input_array)
-
-    # pattern = r'(greater_than_func|greater_than_func2|less_than_func2|less_than_func|equal_to)\(*?(ARG[0-7])\)*?, \(*?(-?\d+)\)*?\)'
     pattern = r'(greater_than_func|greater_than_func2|less_than_func2|less_than_func|equal_to)\(*?(ARG[0-7])\)*?, \(*?(-?\d+\.?\d*|-?\.\d+)\)*?\)'
 
 
     matches = re.findall(pattern, input_array)
-
-    # print(matches)
 
     for match in matches:
         if match[0] == 'greater_than_func' or match[0] == 'greater_than_func2':
@@ -42,7 +37,7 @@ def extract_arguments(input_array):
     return result
 
 def less_than_func2(x, y):
-    # if isinstance(x, int) and isinstance(y, int) and not(isinstance(y, bool)):
+
     if x < y and isinstance(x, myfloat2):
         return 'true'
     else:
@@ -50,16 +45,14 @@ def less_than_func2(x, y):
 
 
 def greater_than_func2(x, y):
-    # if isinstance(x, int) and isinstance(y, int) and not (isinstance(y, bool)):
 
-    # print('checking greater_than ',x, y, x>y, isinstance(x, float))
     if x > y and isinstance(x, myfloat2):
         return 'true'
     else:
         return 'false'
 
 def less_than_func(x, y):
-    # if isinstance(x, int) and isinstance(y, int) and not(isinstance(y, bool)):
+
     if x < y and isinstance(x, myfloat):
         return 'true'
     else:
@@ -67,9 +60,7 @@ def less_than_func(x, y):
 
 
 def greater_than_func(x, y):
-    # if isinstance(x, int) and isinstance(y, int) and not (isinstance(y, bool)):
 
-    # print('checking greater_than ',x, y, x>y, isinstance(x, float))
     if x > y and isinstance(x, myfloat):
         return 'true'
     else:
@@ -77,8 +68,7 @@ def greater_than_func(x, y):
 
 
 def equal_to(x, y):
-    # print('x in equal to is ', x)
-    # print('type of x in equal to is', type(x))
+
     if x[0] == y and isinstance(x, tuple):
         return 'true'
     else:
@@ -136,18 +126,13 @@ def CheckforValidity(ind):
 
 # Define the fitness function
 def evaluate(individual):
-    # Create a function from the individual
-    print(individual)
 
     truepoints = []
 
     flag = CheckforValidity(str(individual))
 
-    # flag = CheckForUniqueness(str(individual)) #checking if unique ARGs have appeared inside the individual
+    if flag == False:
 
-    if flag == False:  # the individual is not unique
-        print('this is flag ', flag)
-        # raise Exception("The individual has multiple occurances of an ARG")
         return False,
     else:
 
@@ -159,12 +144,7 @@ def evaluate(individual):
 
             x = testpopulation.loc[i:i, ['ALT_Mode1', 'ALT_Mode2', 'TurnK1', 'TurnK2', 'Pwheel1', 'Pwheel2', 'Throttle1', 'Throttle2']].values
 
-            # print('this is x[0] ', x[0])
-
             result = func(*x[0])
-
-            # print(result)
-
             results.append(result)
 
         countfails = 0
@@ -173,9 +153,8 @@ def evaluate(individual):
 
         for i in range(len(results)):
 
-            # print('this is results[i] ', results[i])
             if results[i] == 'true':
-                # print('this is label ', testpopulation.loc[i, 'Label'])
+
                 if testpopulation.loc[i, 'Label'] == 0:
                     countfails = countfails + 1
 
@@ -200,14 +179,10 @@ def evaluate(individual):
 
 
         if fitness == 'naish':
-        #####FITNESS 4 ########## MAXIMIZE NAISH PASS CLASS
-
             res = (countpasses / allpassesofdataset) - (countfails / (1 + allfailsofdataset))
 
 
         elif fitness == 'tarantula':
-        ############ TARANTULA ############### MAXIMIZE PASS CLASS
-
             if len(truepoints) !=0 :
 
                print(allpassesofdataset, allfailsofdataset)
@@ -219,8 +194,6 @@ def evaluate(individual):
                res = -100000
 
         elif fitness == 'ochiai':
-
-        ######## OCHIAI ############ MAXIMIZE PASS CLASS
 
             if len(truepoints) != 0:
 
@@ -261,13 +234,9 @@ def whole_and(ar1, ar2):
 
 
 def sub_and(ar1, ar2):
-    # print('i am here------------------------------')
 
-    # if len(ar1) == 0 or len(ar2) == 0:
-    #     return 'false'
-    #
     if (ar1 == 'true' and ar2 == '') or (ar1 == 'true' and ar2 == 'true') or (ar1 == '' and ar2 == 'true'):
-        # print('i am returning True ----------------------------------------------')
+
         return 'true'
     else:
         return 'false'
