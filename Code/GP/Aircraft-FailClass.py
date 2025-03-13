@@ -184,12 +184,12 @@ def evaluate(individual):
                 allfailsofdataset = allfailsofdataset + 1
 
 
-        if fitness == 'naish':
+        if fitness == 'Naish':
   
             res = (countfails / allfailsofdataset) - (countpasses / (1 + allpassesofdataset))
 
 
-        elif fitness == 'tarantula':
+        elif fitness == 'Tarantula':
 
             if len(truepoints) !=0 :
 
@@ -201,7 +201,7 @@ def evaluate(individual):
 
                res = -100000
 
-        elif fitness == 'ochiai':
+        elif fitness == 'Ochiai':
             if len(truepoints) != 0:
 
                 res = countfails / (math.sqrt(allfailsofdataset * (countfails + countpasses)))
