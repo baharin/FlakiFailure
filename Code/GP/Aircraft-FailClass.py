@@ -440,7 +440,7 @@ for h in range(20):
     results.loc[results.shape[0]] = [h, 'random', populationsize, NGEN, max_depth, top_n_items, top_n_items_fit]
 
 
-results.to_excel('GPresults_failclass_'+fitness+'.xlsx')
+results.to_excel('GPresults_failclass_aircraft_'+fitness+'.xlsx')
 
 bestfitnessovertime.to_excel(
-    'BestFitnessesOvertime_failclass_'+fitness+'.xlsx')
+    'BestFitnessesOvertime_failclass_aircraft_'+fitness+'.xlsx')
