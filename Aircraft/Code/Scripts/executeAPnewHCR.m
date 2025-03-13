@@ -13,17 +13,14 @@ function executeAPnewHCR()
         
 %% Autopilot-ars-testgeneration %%        
         
-            %Define path to log time data of each run in a CSV file
-            timePath = '..\Results\autopilot\';
             %"runs" is an array containing integers that represents each
             %run of an approach. For example runs = [1,2,3,4,5] calls
             %eachRuns 5 times with the approach defined in "models" array.
 
             runs = [0];
-            %Possible values: "ensemble","genLog","genRegTree","random","rf_ensemble","regtree","gpr","gpr_nonlinear","ls_boost","svr","nn"
+            
             models = ["random"]; 
-            %Specify a valid requirement to test for test generation
-            %Possible values: "R1.4.1","R1.6","R12.1"
+
             req = ["R12.1"]; 
             for r = 1: length(runs)
                 for i = 1: length(models)
@@ -31,36 +28,12 @@ function executeAPnewHCR()
                     
                         timeData = [];
                         startTime = tic;
-                        if strcmp(models(i),'ensemble')
-                            %Ensemble 
-%Parameter Definition of eachRun(Test generation startegy,Search Algorithm, Translation, Simulink model, Requirement, MaxIteration, Runs, Test generation startegy, First loop simulation budget, Total simulation budget)  
-                            eachRun('ensemble',@ars,'R','AP',req(j),3500,runs(r), models(i),300,600);
-                        elseif strcmp(models(i),'genLog')
-                            %Guided search - Logistic Regression
-                            eachRun('generateLog',@ars,'R','AP',req(j),3500,runs(r), models(i),300,600);
-                        elseif strcmp(models(i),'genRegTree')
-                            %Guided search - Regression Tree
-                            eachRun('generate',@ars,'R','AP',req(j),3500,runs(r), models(i),300,600);
-                        elseif strcmp(models(i),"random")
+                        
+                        if strcmp(models(i),"random")
                             eachRun('random',@ars,'R','AP',req(j),3500,runs(r), models(i),300,600);
-                        else
-                            %Individual surrogates i.e nn, svr, rf, gpr,
-                            %gprnl etc.
-                            eachRun('optimize_r',@ars,'R','AP',req(j),3500,runs(r), models(i),300,600);
 
                         end
-                        endTime = toc(startTime);
-                        timeData(1) = endTime;
-                        %Log time data in seconds
-                        tPath = strcat(timePath,models(i),'_timeTaken.csv');
-                        writematrix(timeData,tPath,'WriteMode', 'append');
-
-                        %Uncomment this line to evaluate the surrogate
-                        %approach. I.e Uncomment if models array contains
-                        %"ensemble" or any other individual surrogate
-                        %models such as nn, svr, gpr, rf etc. 
-
-%                         eachRun('verify',@ars,'R','AP',req(j),1,runs(r), models(i),300,600);
+                        
                     end
                 end
             end
@@ -74,16 +47,6 @@ function eachRun(simType,algorithm,translation,model,requirement,iteration,count
         switch model 
             case 'AP'
                 Vmodel = 'autopilot';
-            case 'TT'
-                Vmodel = 'twotanks';
-            case 'NN'
-                Vmodel = 'nn';
-            case 'TU'
-                Vmodel = 'tustin';
-            case 'TU3'
-                Vmodel = 'tustinr3';
-            case 'TU4'
-                Vmodel = 'tustinr4';
         end
         Vproblem = strcat('@',Vmodel);
         Vproblem1 = str2func(Vproblem);
