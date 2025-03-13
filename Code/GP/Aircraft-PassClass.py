@@ -178,11 +178,11 @@ def evaluate(individual):
                 allfailsofdataset = allfailsofdataset + 1
 
 
-        if fitness == 'naish':
+        if fitness == 'Naish':
             res = (countpasses / allpassesofdataset) - (countfails / (1 + allfailsofdataset))
 
 
-        elif fitness == 'tarantula':
+        elif fitness == 'Tarantula':
             if len(truepoints) !=0 :
 
                print(allpassesofdataset, allfailsofdataset)
@@ -193,7 +193,7 @@ def evaluate(individual):
 
                res = -100000
 
-        elif fitness == 'ochiai':
+        elif fitness == 'Ochiai':
 
             if len(truepoints) != 0:
 
@@ -289,15 +289,7 @@ results = pd.DataFrame(columns=['Run', 'TestDataset', 'PopulationSize', 'Numbero
 
 # Define the primitive set for genetic programming
 pset = gp.PrimitiveSetTyped("MAIN", [tuple, tuple, myfloat2, myfloat2, myfloat2, myfloat2, myfloat, myfloat], str)  # the first two floats are actually bools
-# pset.addPrimitive(whole_and, [str, str], bool)
 pset.addPrimitive(sub_and, [str, str], str)
-# pset.addPrimitive(operator.sub, arity=2)
-# pset.addPrimitive(operator.mul, arity=2)
-# pset.addPrimitive(operator.neg, arity=1)
-# pset.addPrimitive(math.cos, arity=1)
-# pset.addPrimitive(math.sin, arity=1)
-# pset.addPrimitive(max, arity=2)
-# pset.addPrimitive(min, arity=2)
 pset.addPrimitive(less_than_func2, [myfloat2, int], str)
 pset.addPrimitive(greater_than_func2, [myfloat2, int], str)
 pset.addPrimitive(less_than_func, [myfloat, float], str)
@@ -306,15 +298,11 @@ pset.addPrimitive(equal_to, [tuple, int], str)
 pset.addEphemeralConstant("rand", lambda: int((random.uniform(-30, 30))), int)
 pset.addEphemeralConstant("randbool", lambda: int(random.choice([0, 1])), int)
 pset.addEphemeralConstant("randbool2", lambda: round(random.uniform(0, 1), 1), float)
-# pset.addEphemeralConstant("randbool", lambda: bool(random.choice([True, False])), bool)
 pset.addPrimitive(pass_through, [int], int)
 pset.addPrimitive(pass_throughmyfloat, [myfloat], myfloat)
 pset.addPrimitive(pass_throughmyfloat2, [myfloat2], myfloat2)
-# pset.addPrimitive(pass_throughstr, [str], str)
 pset.addPrimitive(pass_throughfloat, [float], float)
 pset.addPrimitive(pass_throughtuple, [tuple], tuple)
-# pset.addPrimitive(pass_throughbool, [bool], bool)
-# pset.addTerminal(1, bool)
 pset.addTerminal('', str)
 
 
