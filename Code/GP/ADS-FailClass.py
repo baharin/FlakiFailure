@@ -368,8 +368,7 @@ for k in range(1, 10):
     bestfitnessovertime = pd.DataFrame(columns=['Run', 'Generation', 'BestFitness', 'BestInd'])
 
     results = pd.DataFrame(columns=['Run', 'TestDataset', 'PopulationSize', 'NumberofGenerations',
-                                    'MaxTreeDepth', 'BestIndividualFormula', 'BestIndividualFitness',
-                                    'BaselinePrecision'])
+                                    'MaxTreeDepth', 'BestIndividualFormula', 'BestIndividualFitness'])
 
     if model == 'beamng':
 
@@ -524,8 +523,8 @@ for k in range(1, 10):
         
 
 
-        results.loc[results.shape[0]] = [h, 'GP', populationsize, NGEN, max_depth, top_n_items, top_n_items_fit,
-                                         baselineprecision]
+        results.loc[results.shape[0]] = [h, 'GP', populationsize, NGEN, max_depth, top_n_items, top_n_items_fit]
+                                         
 
 
 
