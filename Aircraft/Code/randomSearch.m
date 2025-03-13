@@ -1,6 +1,3 @@
-%Function implements baseline algorithm ie. Naive Random Search algorithm
-%that generates an input randomly from input search space and simulates the
-%inputs iteratively till the simulation budget is reached. 
 function PopObj = randomSearch(run,element,problem,req,evaluation)
     p = '..\..\Results\';
     data_path = strcat(p,func2str(problem),'\');
