@@ -521,10 +521,10 @@ for theta in [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]:
       file_exists = os.path.isfile('ensembleNTSS.xlsx')
     
       if file_exists:
-          with pd.ExcelWriter('ensembleRouter'+theta+'.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+          with pd.ExcelWriter('ensembleRouter'+str(theta)+'.xlsx', engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
               res.to_excel(writer, sheet_name='dataset'+str(kk), index=False)
     
       else:
-          with pd.ExcelWriter('ensembleRouter'+theta+'.xlsx', engine='openpyxl', mode = 'w')  as writer:
+          with pd.ExcelWriter('ensembleRouter'+str(theta)+'.xlsx', engine='openpyxl', mode = 'w')  as writer:
               res.to_excel(writer, sheet_name='dataset'+str(kk), index=False)  
 
