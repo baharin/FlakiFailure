@@ -79,8 +79,7 @@ def CheckForValidRanges(operator, variable, value):
     variables = ['ARG0', 'ARG1', 'ARG2', 'ARG3', 'ARG4', 'ARG5', 'ARG6', 'ARG7']
 
 
-    ranges = [(0, 1), (0, 1), (0, 45), (0, 45), (-30, 30), (-30, 30), (0, 1), (0, 1)]  #change to  [(0, 6), (20, 50), (0, 10)]   for MH
-
+    ranges = [(0, 1), (0, 1), (0, 45), (0, 45), (-30, 30), (-30, 30), (0, 1), (0, 1)]
 
     indexx = variables.index(variable)
 
@@ -162,7 +161,7 @@ def evaluate(individual):
                     countpasses = countpasses + 1
 
 
-                truepoints.append(float(testpopulation.loc[i, 'Label'])) #UN COMMENT FOR SETUPS OTHER THAN TOWN
+                truepoints.append(float(testpopulation.loc[i, 'Label'])) 
 
 
         allpassesofdataset = 0
