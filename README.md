@@ -55,7 +55,7 @@ Instructions to Run the Scripts
 --------------------------------------------
 <b> Training Data Generation </b>
 * <b> Aircraft </b>
-  * First follow lanuch Matlab and add all the subfolders in the ``Aircraft`` folder to the classpath.
+  * First follow launch Matlab and add all the subfolders in the ``Aircraft`` folder to the classpath.
   * Excute ``Scripts/executeAPnewHCR``.
 * <b> ADS </b>
   * First follow the instructions in the [BeamNG tech documentation](https://documentation.beamng.com/beamng_tech/install/) to install BeamNG.tech
