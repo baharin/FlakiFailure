@@ -26,7 +26,7 @@ def FlakinessRate(dataset, rep, label):
   return frate  
 
 
-a = input('Select dataset from AP-SNG, Dave2, R1, R2, R3, R4, Router...')
+a = input('Select dataset from AP-SNG, Dave2, R1, R2, R3, R4, Router, Aircraft...')
 
 if a == 'AP-SNG':
 
@@ -57,6 +57,11 @@ elif a == 'Router':
 
   label = 'Label'
   dataset = 'Router'
+
+elif a == 'Aircraft':
+
+  label = 'Label'
+  dataset = 'Aircraft'
 
 rep = 10
 
