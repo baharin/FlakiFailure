@@ -68,8 +68,7 @@ def greater_than_func(x, y):
 
 
 def equal_to(x, y):
-    # print('x in equal to is ', x)
-    # print('type of x in equal to is', type(x))
+
     if x[0] == y and isinstance(x, tuple):
         return 'true'
     else:
@@ -132,7 +131,7 @@ def evaluate(individual):
 
     flag = CheckforValidity(str(individual))
 
-    if flag == False:  # the individual is not unique
+    if flag == False:  
         return False,
     else:
 
@@ -144,11 +143,7 @@ def evaluate(individual):
 
             x = testpopulation.loc[i:i, ['ALT_Mode1', 'ALT_Mode2', 'TurnK1', 'TurnK2', 'Pwheel1', 'Pwheel2', 'Throttle1', 'Throttle2']].values
 
-            # print('this is x[0] ', x[0])
-
             result = func(*x[0])
-
-            # print(result)
 
             results.append(result)
 
@@ -160,7 +155,6 @@ def evaluate(individual):
 
             # print('this is results[i] ', results[i])
             if results[i] == 'true':
-                # print('this is label ', testpopulation.loc[i, 'Label'])
                 if testpopulation.loc[i, 'Label'] == 0:
                     countfails = countfails + 1
 
@@ -168,7 +162,7 @@ def evaluate(individual):
                     countpasses = countpasses + 1
 
 
-                truepoints.append(float(testpopulation.loc[i, 'Label'])) #UN COMMENT FOR SETUPS OTHER THAN TOWN
+                truepoints.append(float(testpopulation.loc[i, 'Label'])) 
 
 
         allpassesofdataset = 0
@@ -361,8 +355,6 @@ for h in range(20):
     mutpb = 0.1  
     while gen < NGEN:
         try:
-            print(h)
-            print('Generation ', gen)
             # Create the initial population
             population = toolbox.population(
                 n=populationsize * 2)  
@@ -371,13 +363,8 @@ for h in range(20):
 
             for fit, ind in zip(fits, population):
                 ind.fitness.values = fit
-                # print(fit)
-                # print(countt)
                 if fit[0] == False:
                     population = list(filter((ind).__ne__, population))
-                    # population.remove(ind)
-
-            print('now len of initial population is ', len(population))
 
             if len(population) < populationsize:
                 population = population + toolbox.population(n=populationsize - len(population))
@@ -389,17 +376,11 @@ for h in range(20):
             N = 10
 
             top_best_individuals = tools.selBest(population, k = N)
-            # print('this is top best ind list ', top_best_individuals)
-            # print('[0]', tools.selBest(population, k = N)[0])
-            # print('from list ', top_best_individuals[0])
-            # print('str form ', str(top_best_individuals[0]))
 
             top_best_individuals_fitness = []
 
             for ll in range(N):
                 top_best_individuals_fitness.append(top_best_individuals[ll].fitness.values[0])
-                # print(top_best_individuals[ll].fitness)
-                # print(top_best_individuals[ll].fitness.values[0])
 
             best_individuals_overgenerations.append(top_best_individuals)
             best_individuals_overgenerations_fitness.append(top_best_individuals_fitness)
@@ -429,10 +410,8 @@ for h in range(20):
 
     paired_list = list(zip(flattened_list_fit, flattened_list_ind))
 
-    # Sort the paired list based on the sorting criteria
     paired_list.sort(reverse=True, key=lambda x: x[0])
 
-    # Extract the top N items based on the sorted order
     top_n_items = [str(item[1]) for item in paired_list[:topbests]]
     top_n_items_fit = [item[0] for item in paired_list[:topbests]]
 
