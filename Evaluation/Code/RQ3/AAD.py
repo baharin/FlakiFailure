@@ -6,10 +6,8 @@ import numpy as np
 import ast 
 
 # Initialize dictionary to store data for boxplots
-datasets = ['APSNG', 'Dave2', 'Keeplane', 'Distance', 'Damage', 'Ultra', 'Router']
+datasets = ['APSNG', 'Dave2', 'R1', 'R4', 'R2', 'R3', 'Router', 'Aircraft']
 methods = ['Tarantula', 'Ochiai', 'Naish', 'DT', 'DR', 'Ensemble']
-methodsforplots = [r"$GP_T$", r"$GP_O$", r"$GP_N$", "DT", "DR", "Ensemble"]
-datasetsforplots = ['AP-SNG', 'DAVE2', 'AP-TWN (R1)', 'AP-TWN (R4)', 'AP-TWN (R2)', 'AP-TWN (R3)', 'Router']
 stats = {}
 data_for_plot = {dataset: {method: [] for method in methodsforplots} for dataset in datasetsforplots}
 
@@ -68,9 +66,7 @@ for i, dataset in enumerate(datasets):
 print('ENS done')     
 
 method = 'DT'
-popntss = [[] for i in range(11)]
-datasets2 = ['APSNG', 'Dave2', 'Keeplane', 'Distance', 'Damage', 'Ultra', 'Router-ind', 'Router-sum']
-for i, dataset in enumerate(datasets2):
+for i, dataset in enumerate(datasets):
     for d in range(2, 23, 2):
         pop = []
         for hh in range(10):
@@ -81,40 +77,22 @@ for i, dataset in enumerate(datasets2):
                     continue
                 else:
                     aa = (1 - ast.literal_eval(data.loc[i*24 + d, 'RUN'+str(run)])[0]) * ast.literal_eval(data.loc[i*24 + d, 'RUN'+str(run)])[1]
-                    pop.append(aa)     
-    
-        pop = [x for x in pop if not math.isnan(x)]
+                    pop.append(aa) 
         
-        if 'NTSS' in dataset:
+        pop = [x for x in pop if not math.isnan(x)]
 
-            popntss[d//2 - 1].extend(pop)
+        if len(pop) != 0 :
+
+            stats[method + ',' + dataset + ',' + str(d) ] = np.mean(np.abs(pop - np.mean(pop)))
 
         else:
-            if len(pop) != 0:
 
-                stats[method + ',' + dataset + ',' + str(d) ] = np.mean(np.abs(pop - np.mean(pop)))
+            stats[method + ',' + dataset + ',' + str(d) ] = 'NA'
 
-            else:
-
-                stats[method + ',' + dataset + ',' + str(d) ] = 'NA'
-
-
-for h in range(len(popntss)):
-
-    if len(popntss[h]) != 0:
-
-        stats['DT,NTSS,' + str(h)] = np.mean(np.abs(popntss[h] - np.mean(popntss[h])))
-
-    else:
-
-        stats['DT,NTSS,' + str(h)] = 'NA'
-
-print('DT done')
+print('DT done')  
 
 method = 'DR'
-popntss = [[] for i in range(11)]
-datasets2 = ['APSNG', 'Dave2', 'Keeplane', 'Distance', 'Damage', 'Ultra', 'Router-ind', 'Router-sum']
-for i, dataset in enumerate(datasets2):
+for i, dataset in enumerate(datasets):
     for d in range(2, 23, 2):
         pop = []
         for hh in range(10):
@@ -125,37 +103,20 @@ for i, dataset in enumerate(datasets2):
                     continue
                 else:
                     aa = (1 - ast.literal_eval(data.loc[i*24 + d, 'RUN'+str(run)])[0]) * ast.literal_eval(data.loc[i*24 + d, 'RUN'+str(run)])[1]
-                    pop.append(aa)     
-    
-        pop = [x for x in pop if not math.isnan(x)]
+                    pop.append(aa) 
         
-        if 'NTSS' in dataset:
+        pop = [x for x in pop if not math.isnan(x)]
 
-            popntss[d//2 - 1].extend(pop)
+        if len(pop) != 0 :
+
+            stats[method + ',' + dataset + ',' + str(d) ] = np.mean(np.abs(pop - np.mean(pop)))
 
         else:
-            if len(pop) != 0:
 
-                stats[method + ',' + dataset + ',' + str(d) ] = np.mean(np.abs(pop - np.mean(pop)))
+            stats[method + ',' + dataset + ',' + str(d) ] = 'NA'
 
-            else:
-
-                stats[method + ',' + dataset + ',' + str(d) ] = 'NA'
-
-
-
-for h in range(len(popntss)):
-
-    if len(popntss[h]) != 0:
-
-        stats['DR,NTSS,' + str(h)] = np.mean(np.abs(popntss[h] - np.mean(popntss[h])))
-
-    else:
-
-        stats['DR,NTSS,' + str(h)] = 'NA'
-
-print('DR done')
+print('DR done')  
 
 df = pd.DataFrame(list(stats.items()), columns=['(Method, Dataset, Theta)', 'MAD'])
 
-df.to_excel('MAD.xlsx', index=False)
+df.to_excel('AAD.xlsx', index=False)
