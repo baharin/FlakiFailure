@@ -115,7 +115,7 @@ def CalculatePerformance(coveredpoints, technique, inconclus, model):
 
 import ast
 
-models = ['APSNG', 'Dave2', 'R1', 'R4', 'R2', 'R3', 'Router']
+models = ['APSNG', 'Dave2', 'R1', 'R4', 'R2', 'R3', 'Router', 'Aircraft']
 
 withorwithout = ['dataset'+str(hh) for hh in range(0, 10)]
 
