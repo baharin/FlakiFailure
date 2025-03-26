@@ -10,17 +10,10 @@ import pandas as pd
 
 import heapq
 
-def ExtractRanges(rule, model):
-    if model == 'R141':
-        dictt = {'ARG0': [0, 1], 'ARG1': [0, 1], 'ARG2' : [0, 45], 'ARG3': [-30, 30]}
+def ExtractRanges(rule):
 
-    elif model == 'R16':
-      
-        dictt = {'ARG0': [0, 1], 'ARG1': [0, 1], 'ARG2': [0, 1], 'ARG3': [0, 1], 'ARG4': [0, 1], 'ARG5': [0, 1], 'ARG6' : [0, 45], 'ARG7': [0, 45], 'ARG8': [0, 45], 'ARG9': [-30, 30], 'ARG10': [-30, 30], 'ARG11': [-30, 30]}
-
-    elif model == 'R121':
         
-        dictt = {'ARG0' : [0, 45], 'ARG1': [0, 45], 'ARG2': [-30, 30], 'ARG3': [-30, 30], 'ARG4': [0, 1], 'ARG5': [0, 1]}
+    dictt = {'ARG0': [0, 1], 'ARG1': [0, 1], 'ARG2' : [0, 45], 'ARG3': [0, 45], 'ARG4': [-30, 30], 'ARG5': [-30, 30], 'ARG6': [0, 1], 'ARG7': [0, 1]}
 
 
     for i in range(len(rule)):
@@ -40,7 +33,7 @@ def ExtractRanges(rule, model):
 
     return dictt
 
-def CalculatePerformance(fail_assertions, pass_assertions, dataset, model, res, run):
+def CalculatePerformance(fail_assertions, pass_assertions, dataset, res, run):
 
     covered_values = [('No', -1, -1, -1)] * len(res.index)
 
@@ -52,38 +45,12 @@ def CalculatePerformance(fail_assertions, pass_assertions, dataset, model, res, 
       rule = ast.literal_eval(fail_assertions[jj])
 
       print('this is rule', rule)
-      ranges = ExtractRanges(rule, model)
+      ranges = ExtractRanges(rule)
 
 
       for h in range(len(dataset.index)):
-
-        if model == 'R141':
-
-            if ranges['ARG0'][0] <= float(dataset.loc[h, 'AP_Eng1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG3'][1]:
-
-                if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
-
-                    continue
-
-                else:
-
-                    res.at[h, 'Covered'+run] = ('0', rule)
-
-        elif model == 'R16':
            
-           if ranges['ARG0'][0] <= float(dataset.loc[h, 'AP_Eng1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'AP_Eng2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'AP_Eng3']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'ALT_Mode2']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'ALT_Mode3']) <= ranges['ARG5'][1] and ranges['ARG6'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG6'][1] and ranges['ARG7'][0] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG7'][1] and ranges['ARG8'][0] <= float(dataset.loc[h, 'TurnK3']) <= ranges['ARG8'][1] and ranges['ARG9'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG9'][1] and ranges['ARG10'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG10'][1] and ranges['ARG11'][0] <= float(dataset.loc[h, 'Pwheel3']) <= ranges['ARG11'][1]:
-
-                if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
-
-                    continue
-
-                else:
-
-                    res.at[h, 'Covered'+run] = ('0', rule)
-
-        elif model == 'R121':
-           
-           if ranges['ARG0'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'Throttle1']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'Throttle2']) <= ranges['ARG5'][1]:
+           if ranges['ARG0'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'ALT_Mode2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG2'][1] and ranges['ARG1'][3] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG5'][1] and ranges['ARG6'][0] <= float(dataset.loc[h, 'Throttle1']) <= ranges['ARG6'][1] and ranges['ARG7'][0] <= float(dataset.loc[h, 'Throttle2']) <= ranges['ARG7'][1]:
 
                 if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
 
@@ -99,35 +66,12 @@ def CalculatePerformance(fail_assertions, pass_assertions, dataset, model, res, 
       rule = ast.literal_eval(pass_assertions[jj])
 
       print('this is rule', rule)
-      ranges = ExtractRanges(rule, model)
+      ranges = ExtractRanges(rule)
 
 
       for h in range(len(dataset.index)):
 
-        if model == 'R141':
-
-            if ranges['ARG0'][0] <= float(dataset.loc[h, 'AP_Eng1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG3'][1]:
-
-                if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
-
-                    continue
-
-                else:
-
-                    res.at[h, 'Covered'+run] = ('1', rule)
-
-        elif model == 'R16':
-           if ranges['ARG0'][0] <= float(dataset.loc[h, 'AP_Eng1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'AP_Eng2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'AP_Eng3']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'ALT_Mode2']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'ALT_Mode3']) <= ranges['ARG5'][1] and ranges['ARG6'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG6'][1] and ranges['ARG7'][0] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG7'][1] and ranges['ARG8'][0] <= float(dataset.loc[h, 'TurnK3']) <= ranges['ARG8'][1] and ranges['ARG9'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG9'][1] and ranges['ARG10'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG10'][1] and ranges['ARG11'][0] <= float(dataset.loc[h, 'Pwheel3']) <= ranges['ARG11'][1]:
-                if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
-
-                    continue
-
-                else:
-
-                    res.at[h, 'Covered'+run] = ('1', rule)
-
-        elif model == 'R121':
-           if ranges['ARG0'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG2'][1] and ranges['ARG3'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'Throttle1']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'Throttle2']) <= ranges['ARG5'][1]:
+           if ranges['ARG0'][0] <= float(dataset.loc[h, 'ALT_Mode1']) <= ranges['ARG0'][1] and ranges['ARG1'][0] <= float(dataset.loc[h, 'ALT_Mode2']) <= ranges['ARG1'][1] and ranges['ARG2'][0] <= float(dataset.loc[h, 'TurnK1']) <= ranges['ARG2'][1] and ranges['ARG1'][3] <= float(dataset.loc[h, 'TurnK2']) <= ranges['ARG3'][1] and ranges['ARG4'][0] <= float(dataset.loc[h, 'Pwheel1']) <= ranges['ARG4'][1] and ranges['ARG5'][0] <= float(dataset.loc[h, 'Pwheel2']) <= ranges['ARG5'][1] and ranges['ARG6'][0] <= float(dataset.loc[h, 'Throttle1']) <= ranges['ARG6'][1] and ranges['ARG7'][0] <= float(dataset.loc[h, 'Throttle2']) <= ranges['ARG7'][1]:
 
                 if res.loc[h, 'Covered'+run][0] != 'No': # if this test input is already covered by another rule
 
@@ -150,11 +94,6 @@ class Vertex:
         self.part = part
 
     def __lt__(self, other):
-        # if self.degree != other.degree:
-        #     return self.degree > other.degree
-        # if self.weight != other.weight:
-        #     return self.weight > other.weight
-        # return self.part == 'A' and other.part == 'B' #part A is pass, part B is fail
 
         if self.weight != other.weight:
             return self.weight > other.weight
@@ -318,7 +257,7 @@ def FindPassandFail(data, theta, run):
 
 results = []
 
-data = pd.read_excel('C:\\Users\\Mehrdad\\Documents\\rabbitrun\\meetings\\Paper 3 - GenTC\\autopilot\\AP121 after adding the condition in code\\GP\\GPruleswithProb.xlsx')
+data = pd.read_excel('path_to_file\\GPruleswithProb.xlsx')
 
 thetas = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
 
@@ -330,8 +269,7 @@ for theta in thetas:
 
     if kk == 0 or kk == 42 or kk == 84:
 
-      model = 'R121'
-      testset = pd.read_excel('C:/Users/Mehrdad/Documents/rabbitRun/meetings/Paper 3 - GenTC/autopilot/testset/AP_R12_1-testset.xlsx')
+      testset = pd.read_excel('path_to_file/testset/Aircraft-testset.xlsx')
 
     if kk == 0 or kk == 126 or kk == 252:
 
@@ -359,7 +297,7 @@ for theta in thetas:
       s = Solver()
 
 
-      inconsistencies = defaultdict(list)  # dictionary of inconsistencies (the graph)
+      inconsistencies = defaultdict(list)  
 
       print('fail_assertions', fail_assertions)
 
@@ -377,7 +315,6 @@ for theta in thetas:
               s = Solver()
               B_1 = fail_assertions[j]
 
-              # s.push()  # Save the current state of the solver
               B = CreateFormula(B_1)
 
               s.add(A, B)
@@ -412,10 +349,7 @@ for theta in thetas:
 
         weights[fail_assertions[i]] = 1/len(rule)
 
-      # print(weights)
-
-
-
+    
 
       ######################
       removed_vertices, removed_vertices_withpassfail = remove_vertices(inconsistencies, pass_assertions, fail_assertions, weights)
@@ -440,15 +374,17 @@ for theta in thetas:
 
       ########################### covered points ##############################
 
-      res = CalculatePerformance(fail_assertions, pass_assertions, testset, model, res, run)
+      res = CalculatePerformance(fail_assertions, pass_assertions, testset, res, run)
 
       print('done')
 
     import os 
 
-    file_exists = os.path.isfile('newGP'+fitness+'-coveredpoints-'+model+'-theta'+str(theta)+'-testset.xlsx')
+    model = 'Aircraft'
 
-    with pd.ExcelWriter('newGP'+fitness+'-coveredpoints-'+model+'-theta'+str(theta)+'-testset.xlsx', engine = 'openpyxl', mode = 'a' if file_exists else 'w') as writer:
+    file_exists = os.path.isfile('GP'+fitness+'-coveredpoints-'+model+'-theta'+str(theta)+'-testset.xlsx')
+
+    with pd.ExcelWriter('GP'+fitness+'-coveredpoints-'+model+'-theta'+str(theta)+'-testset.xlsx', engine = 'openpyxl', mode = 'a' if file_exists else 'w') as writer:
         res.to_excel(writer, sheet_name = 'dataset', index = False)
 
 
