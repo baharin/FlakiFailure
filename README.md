@@ -1,6 +1,6 @@
-# Robust Automated Test Oracles for Flaky Cyber-Physical System Simulators
+# Automated Test Oracles for Flaky Cyber-Physical System Simulators: Approach and Evaluation
 
-In this article, we present a novel approach for creating test oracles for CPS by deriving probabilistic and interpretable assertions from the CPS's inputs. For each test case, our assertion-based test oracle determines, without executing the test case, whether it passes, fails, or if the oracle is inconclusive in proposing a verdict. We propose two methods for generating assertion-based test oracles: one using genetic programming (GP) and the other using interpretable ML techniques, specifically decision trees (DT) and decision rules (DR). Below we briefly describe each step of GenTC, our framework for deriving assertion-based test oracles for a given SUT: 
+In this article, we propose assertion-based test oracles for CPS, defined as sets of logical and arithmetic predicates over the inputs of the system under test (SUT). Given a test input, an assertion-based test oracle determines – without requiring system execution – whether the test passes, fails, or if the oracle is inconclusive in predicting a verdict. When the oracle is inconclusive, system execution becomes necessary. We propose two methods for generating assertion-based test oracles: one using genetic programming (GP) and the other using interpretable ML techniques, specifically decision trees (DT) and decision rules (DR). Below we briefly describe each step of GenTC, our framework for deriving assertion-based test oracles for CPS: 
 
 <p align="center">
   <img src="https://github.com/baharin/FlakiFailure/blob/main/overview.JPG" width="700" height="200" class="centerImage" />
