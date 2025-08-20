@@ -6,21 +6,21 @@ In this article, we propose assertion-based test oracles for CPS, defined as set
   <img src="https://github.com/baharin/FlakiFailure/blob/main/overview.JPG" width="700" height="200" class="centerImage" />
 </p>
 
-* <p> <b> Training Data Generation </b> This step uses adaptive random testing to generate a set of test inputs and execute them using the SUT. </p>
+* <p> <b> Training Data Generation </b> This step uses adaptive random testing to generate a training set of test inputs. To label these test inputs either as pass or fail, they are executed on the SUT. </p>
 
-* <p> <b> Condition Inference </b> This step uses the training data to learn conditions for assertion-based test oracles. This step identifies conditions that best explain pass elements or fail elements in the training data. Specifically, in this step, we use alternative techniques to infer conditions from the data. The alternative approaches are Genetic Programming (GP) and ML-based DT and DR techniques. 
+* <p> <b> Condition Inference </b> This step uses the training set to learn conditions for assertion-based test oracles. This step identifies conditions that best explain pass elements or fail elements in the training set. Specifically, in this step, we use alternative techniques to infer conditions from the data. The alternative approaches are Genetic Programming (GP) and ML-based DT and DR techniques. 
   
   * <b> Condition Inference by GP </b> The conditions inferred by GP structurally conform to the following grammar: 
 
     <p align="center">
       <img src="https://github.com/baharin/FlakiFailure/blob/main/grammar.JPG" width="500" height="100" class="centerImage" />
     </p>
-         This grammar generates conditions that are either a single relational expression or conjunctions of relational expressions. The relational expressions relate arithmetic expressions, variables and constants.
+         This grammar generates conditions that are either conjunctions of relational expressions over arithmetic terms or disjunctions of such conjunctions. The relational expressions relate arithmetic expressions, variables and constants.
     </p>
 
   * <b> Condition Inference by DT/DR </b> DT generates tree-like structure of decisions, while DR establishes a set of if-then rules for classification based on input variables. 
 
-* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving probabilistic assertions by calculating each condition's probability based on its precision in classifying pass or fail tests in the training set. Next, we ensure that the pass and fail assertions are consistent using Z3 SMT solver.
+* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving confidence levels of assertions by calculating their precisions in classifying pass or fail tests in the training set. Next, we propose a pruning mechanism to ensure that the pass and fail assertions are consistent. Our pruning mechanism employs Z3 solver.
 </p>
 
 License 
