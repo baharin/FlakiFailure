@@ -9,7 +9,7 @@ def stratified_sampling_from_excel(input_file, output_file, sample_size=20):
     # Create a dictionary to store data from each category
     categories = {
         'Fail': df['Fail'].dropna().tolist(),
-        'Pass': df['Simple Pass'].dropna().tolist()
+        'Pass': df['Pass'].dropna().tolist()
     }
     
     total_items = sum(len(items) for items in categories.values())
