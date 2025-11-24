@@ -11,7 +11,7 @@ nominal or low-risk conditions, violations of ODD boundaries, or unmet precondit
 
 * <p> <b> Training Data Generation </b> This step uses adaptive random testing to generate a training set of test inputs. To label these test inputs either as pass or fail, they are executed on the SUT. </p>
 
-* <p> <b> Condition Inference </b> This step uses the training set to learn conditions for assertion-based test oracles. This step identifies conditions that best explain pass elements or fail elements in the training set. Specifically, in this step, we use alternative techniques to infer conditions from the data. The alternative approaches are Genetic Programming (GP) and ML-based DT and DR techniques. 
+* <p> <b> Condition Inference </b> This step uses the training set to learn conditions for assertion-based test validators. This step identifies conditions that best explain pass elements or fail elements in the training set. Specifically, in this step, we use alternative techniques to infer conditions from the data. The alternative approaches are Genetic Programming (GP) and ML-based DT and DR techniques. 
   
   * <b> Condition Inference by GP </b> The conditions inferred by GP structurally conform to the following grammar: 
 
@@ -23,7 +23,7 @@ nominal or low-risk conditions, violations of ODD boundaries, or unmet precondit
 
   * <b> Condition Inference by DT/DR </b> DT generates tree-like structure of decisions, while DR establishes a set of if-then rules for classification based on input variables. 
 
-* <p> <b> Test Oracle Building </b> describes how assertion-based test oracles are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving confidence levels of assertions by calculating their precisions in classifying pass or fail tests in the training set. Next, we propose a pruning mechanism to ensure that the pass and fail assertions are consistent. Our pruning mechanism employs Z3 solver.
+* <p> <b> Test Validator Building </b> describes how assertion-based test validators are constructed using the training set from the first step and the conditions inferred in the second step. This steps involves first deriving confidence levels of assertions by calculating their precisions in classifying pass or fail tests in the training set. Then, we use a pruning mechanism to ensure that the pass and fail assertions are consistent. Our pruning mechanism employs Z3 solver.
 </p>
 
 License 
