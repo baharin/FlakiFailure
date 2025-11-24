@@ -73,9 +73,9 @@ def stratified_sampling_from_excel(input_file, output_file, sample_size=20):
 
 
 if __name__ == "__main__":
-    for dataset in ['beamng', 'dave2', 'keeplane', 'damage', 'distance', 'ultra', 'AP', 'NTSS']:
+    for dataset in ['AP-SNG', 'Dave2', 'AP-TWN(R1)', 'AP-TWN(R2)', 'AP-TWN(R3)', 'AP-TWN(R4)', 'AP-DHB', 'Router']:
       
-        input_filename = "categorized_"+dataset+"passandfailassertionfromoracle"
+        input_filename = #requires an excel file which has one column for pass assertions and one column for fail assertions
         output_filename = "stratified_sampled_"+input_filename+".xlsx"
         
         sampled_data = stratified_sampling_from_excel(input_filename+'.xlsx', output_filename, sample_size=20)
