@@ -8,16 +8,13 @@ VECTOR_STORE_ID =  # vector store id from running Uploadfiles.py
 BASE_PROMPT_TEMPLATE = """
 Context: The statement and documents are related to {system_spec}.  
 
-Task: You receive a statement X and have access to a collection of documents Y through the file_search tool. Your task is to: 
-Retrieve between 2 and 5 of the most related sentences from Y that best match or support X. 
+Task: Given a natural-language assertion X and a collection of documents Y through the file_search tool, your task is to identify and return sentencens that address the same condition, behaviour or outcome as the assertion.
 
-Guidelines:
-1. Return fewer sentences (2–3) if only a few are highly relevant.
-2. Return more sentences (4–5) if multiple sentences are strongly relevant.
-3. Do not include loosely related or tangential sentences.
-4. Preserve the original sentence wording exactly as it appears in Y.
-5. Keep the sentences exactly as they appear in the original document.
-6. Return only the selected sentences, each on a new line, with no explanation.
+Instructions:
+1. Retrieve between 2 and 5 sentences from the documentation that best support the assertion. Return 2–3 sentences if only a few are highly related. Return 4–5 sentences if several sentences are strongly related.
+2. Exclude sentences that are loosely related or tangential.
+3. Preserve the original sentence wording exactly as it appears in the documents Y.
+4. Output only the selected sentences, each on a new line, with no explanations or metadata.
 
 If needed, think more.
 
