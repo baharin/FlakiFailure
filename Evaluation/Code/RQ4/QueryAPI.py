@@ -6,7 +6,7 @@ client = OpenAI()
 VECTOR_STORE_ID =  # vector store id from running Uploadfiles.py
 
 BASE_PROMPT_TEMPLATE = """
-Context: The statement and documents are related to {system_spec}.  
+Context: The assertion and documents are related to {system_spec}.  
 
 Task: Given a natural-language assertion X and a collection of documents Y through the file_search tool, your task is to identify and return sentencens that address the same condition, behaviour or outcome as the assertion.
 
@@ -20,37 +20,37 @@ If needed, think more.
 
 Example:
 
-Example statement (X):
-{example_statement}
+Example assertion (X):
+{example_assertion}
 
 Example retrieved sentences:
 {example_retrieved_sentences}
 
 End of example.
 
-Now process the following statement.
+Now process the following assertion.
 """
 
 
 def find_supporting_sentences(
-    statement,
+    assertion,
     system_spec,
-    example_statement,
+    example_assertion,
     example_retrieved_sentences):
     """
-    statement:                assertion in natural language
+    assertion:                assertion in natural language
     system_spec:              short description of the system (for the Context line)
-    example_statement:        one-shot example statement X
+    example_assertion:        one-shot example assertion X
     example_retrieved_sentences: list of sentences used as the example retrieval result
     """
     
     base_prompt = BASE_PROMPT_TEMPLATE.format(
         system_spec=system_spec,
-        example_statement=example_statement,
+        example_assertion=example_assertion,
         example_retrieved_sentences="\n".join(example_retrieved_sentences),
     )
 
-    prompt = base_prompt + f"\n\nStatement (X): {statement}\n"
+    prompt = base_prompt + f"\n\nAssertion (X): {assertion}\n"
 
     response = client.responses.create(
         model="gpt-5",
@@ -71,7 +71,7 @@ def find_supporting_sentences(
 assertion = "When the thrust is insufficient during the flight, the aircraft does not reach its desired altitude within the required time frame."
 
 system_spec = "an autopilot system of an aircraft"
-example_statement = (
+example_assertion = (
     "When the thrust is insufficient during the flight, the aircraft does not reach its desired altitude within the required time frame."
 )
 example_retrieved_sentences = [
@@ -80,8 +80,8 @@ example_retrieved_sentences = [
 ]
 
 sentences = find_supporting_sentences(
-    statement=assertion,
+    assertion=assertion,
     system_spec=system_spec,
-    example_statement=example_statement,
+    example_assertion=example_assertion,
     example_retrieved_sentences=example_retrieved_sentences,
 )
