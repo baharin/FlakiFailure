@@ -72,11 +72,10 @@ assertion = "When the thrust is insufficient during the flight, the aircraft doe
 
 system_spec = "an autopilot system of an aircraft"
 example_assertion = (
-    "When the thrust is insufficient during the flight, the aircraft does not reach its desired altitude within the required time frame."
+    #add your example here
 )
 example_retrieved_sentences = [
-    "Climb performance is directly dependent upon the ability to produce either excess thrust or excess power.",
-    "Since weight, altitude and configuration changes affect excess thrust and power, they also affect climb performance.",
+    #add your retrieved sentences here
 ]
 
 sentences = find_supporting_sentences(
