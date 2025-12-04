@@ -72,10 +72,10 @@ assertion = "When the thrust is insufficient during the flight, the aircraft doe
 
 system_spec = "an autopilot system of an aircraft"
 example_assertion = (
-    #add your example here
+    #add your example here. for example: "When the autopilot is in altitude hold mode during level flight, the aircraft maintains the selected altitude within a small tolerance over time."
 )
 example_retrieved_sentences = [
-    #add your retrieved sentences here
+    #add your retrieved sentences here. for example: "In altitude hold mode, the automatic flight control system maintains the aircraft at the selected barometric altitude.", "During steady level flight, deviations from the selected altitude must remain within the specified tolerance band.",
 ]
 
 sentences = find_supporting_sentences(
